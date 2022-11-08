@@ -6,6 +6,7 @@ package parchisandfriends;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.ArrayList;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -18,10 +19,25 @@ import javax.swing.JToggleButton;
  */
 public class Tablero extends javax.swing.JFrame {
 
-    
+    static ArrayList<Icon> dados = new ArrayList<>();
+    static ArrayList<Jugador> Jugadores = new ArrayList<>();
+    Icon uno = new javax.swing.ImageIcon(getClass().getResource("/images/dado1.png"));
+    Icon dos = new javax.swing.ImageIcon(getClass().getResource("/images/dado2.png"));
+    Icon tres = new javax.swing.ImageIcon(getClass().getResource("/images/dado3.png"));
+    Icon cuatro = new javax.swing.ImageIcon(getClass().getResource("/images/dado4.png"));
+    Icon cinco = new javax.swing.ImageIcon(getClass().getResource("/images/dado5.png"));
+    Icon seis = new javax.swing.ImageIcon(getClass().getResource("/images/dado6.png"));
+    static int numero1,numero2, turno;
 
     public Tablero(int jugadores) {
         initComponents();
+        dados.add(uno);
+        dados.add(dos);
+        dados.add(tres);
+        dados.add(cuatro);
+        dados.add(cinco);
+        dados.add(seis);
+        
         switch (jugadores) {
             case 2 -> {
                 v1.setVisible(false);
@@ -32,6 +48,8 @@ public class Tablero extends javax.swing.JFrame {
                 m2.setVisible(false);
                 m3.setVisible(false);
                 m4.setVisible(false);
+                P3.setVisible(false);
+                P4.setVisible(false);
                 organizar(1);
                 organizar(2);
             }
@@ -40,6 +58,7 @@ public class Tablero extends javax.swing.JFrame {
                 v2.setVisible(false);
                 v3.setVisible(false);
                 v4.setVisible(false);
+                P4.setVisible(false);
                 organizar(1);
                 organizar(2);
                 organizar(3);
@@ -52,6 +71,14 @@ public class Tablero extends javax.swing.JFrame {
             }
 
         }
+        for (int i = 1; i <= jugadores; i++) {
+            Jugadores.add(new Jugador("Jugador "+i,i));
+            System.out.println(i);
+            
+        }
+        
+        turno=1;
+        
 
 //        ficha = new javax.swing.JButton();
 //        ficha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Amarillo1.png"))); // NOI18N
@@ -119,6 +146,7 @@ public class Tablero extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -683,6 +711,10 @@ public class Tablero extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("PARTIDA");
+
         javax.swing.GroupLayout PfondoLayout = new javax.swing.GroupLayout(Pfondo);
         Pfondo.setLayout(PfondoLayout);
         PfondoLayout.setHorizontalGroup(
@@ -691,22 +723,24 @@ public class Tablero extends javax.swing.JFrame {
                 .addGroup(PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PfondoLayout.createSequentialGroup()
                         .addGap(5, 5, 5)
-                        .addComponent(P2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PfondoLayout.createSequentialGroup()
+                        .addComponent(P2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PfondoLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(P1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
+                        .addComponent(P1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PfondoLayout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PfondoLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(P3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(PfondoLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(P4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(PfondoLayout.createSequentialGroup()
-                        .addGap(91, 91, 91)
+                        .addGap(85, 85, 85)
                         .addGroup(PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(py, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(px, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -715,7 +749,7 @@ public class Tablero extends javax.swing.JFrame {
                             .addComponent(jButton1)
                             .addComponent(jButton2)
                             .addComponent(jButton3))))
-                .addGap(0, 0, 0))
+                .addGap(6, 6, 6))
         );
         PfondoLayout.setVerticalGroup(
             PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -724,9 +758,11 @@ public class Tablero extends javax.swing.JFrame {
                 .addGroup(PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(PfondoLayout.createSequentialGroup()
                         .addComponent(P2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(62, 62, 62)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(P1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(tab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tab, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(PfondoLayout.createSequentialGroup()
                         .addComponent(P3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -739,9 +775,9 @@ public class Tablero extends javax.swing.JFrame {
                             .addComponent(jButton2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 363, Short.MAX_VALUE)
                         .addComponent(P4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addGap(5, 5, 5))
         );
 
         getContentPane().add(Pfondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1490, 800));
@@ -750,66 +786,11 @@ public class Tablero extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public void Dados(JToggleButton dado1, JToggleButton dado2) {
-        int d1 = (int) (Math.random() * 6) + 1;
-        int d2 = (int) (Math.random() * 6) + 1;
-        int result = d1 + d2;
-
-        Icon uno = new javax.swing.ImageIcon(getClass().getResource("/images/dado1.png"));
-        Icon dos = new javax.swing.ImageIcon(getClass().getResource("/images/dado2.png"));
-        Icon tres = new javax.swing.ImageIcon(getClass().getResource("/images/dado3.png"));
-        Icon cuatro = new javax.swing.ImageIcon(getClass().getResource("/images/dado4.png"));
-        Icon cinco = new javax.swing.ImageIcon(getClass().getResource("/images/dado5.png"));
-        Icon seis = new javax.swing.ImageIcon(getClass().getResource("/images/dado6.png"));
-
-        switch (d1) {
-            case 1:
-                dado1.setIcon(uno);
-                break;
-            case 2:
-                dado1.setIcon(dos);
-                break;
-            case 3:
-                dado1.setIcon(tres);
-                break;
-            case 4:
-                dado1.setIcon(cuatro);
-                break;
-            case 5:
-                dado1.setIcon(cinco);
-                break;
-            case 6:
-                dado1.setIcon(seis);
-                break;
-        }
-        switch (d2) {
-            case 1:
-                dado2.setIcon(uno);
-                break;
-            case 2:
-                dado2.setIcon(dos);
-                break;
-            case 3:
-                dado2.setIcon(tres);
-                break;
-            case 4:
-                dado2.setIcon(cuatro);
-                break;
-            case 5:
-                dado2.setIcon(cinco);
-                break;
-            case 6:
-                dado2.setIcon(seis);
-                break;
-        }
-
-    }
-
     //ubicar fichas en sus posiciones iniciales
     public final void organizar(int color) {
         switch (color) {
             case 1 -> {
-                
+
                 r1.setBounds(80, 556, 40, 40);
                 r2.setBounds(180, 556, 40, 40);
                 r3.setBounds(180, 656, 40, 40);
@@ -817,8 +798,7 @@ public class Tablero extends javax.swing.JFrame {
                 System.out.println("organizo");
             }
             case 2 -> {
-                
-               
+
                 a1.setBounds(80, 74, 40, 40);
                 a2.setBounds(180, 74, 40, 40);
                 a3.setBounds(180, 174, 40, 40);
@@ -898,20 +878,35 @@ public class Tablero extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_dado8ActionPerformed
 
+    public static Jugador BuscarTurno(int t){
+        for(Jugador J: Jugadores ){
+            if(J.turno==t)
+                return J;
+        }
+        return null;
+    }
+    
     private void LAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LAActionPerformed
-        Dados(dado3, dado4);
+        Dados dp2 = new Dados(dado3, dado4);
+        dp2.start();
+
     }//GEN-LAST:event_LAActionPerformed
 
     private void LRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LRActionPerformed
-        Dados(dado1, dado2);
+        Dados dp1 = new Dados(dado1, dado2);
+        dp1.start();
+
     }//GEN-LAST:event_LRActionPerformed
 
     private void LMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LMActionPerformed
-        Dados(dado5, dado6);
+        Dados dp3 = new Dados(dado5, dado6);
+        dp3.start();
+
     }//GEN-LAST:event_LMActionPerformed
 
     private void LVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LVActionPerformed
-        Dados(dado7, dado8);
+        Dados dp4 = new Dados(dado7, dado8);
+        dp4.start();
     }//GEN-LAST:event_LVActionPerformed
 
     private void v3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_v3ActionPerformed
@@ -1056,6 +1051,7 @@ public class Tablero extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JButton m1;
     private javax.swing.JButton m2;
     private javax.swing.JButton m3;

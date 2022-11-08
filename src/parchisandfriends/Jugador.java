@@ -12,9 +12,9 @@ public class Jugador {
     private ArrayList<ficha> fichas;
     int turno;
 
-    public Jugador(String nick, ArrayList<ficha> fichas, int turn) {
+    public Jugador(String nick, int turn) {
         this.nick = nick;
-        this.fichas = fichas;
+//        this.fichas = fichas;
         this.turno = turn;
     }
 }
