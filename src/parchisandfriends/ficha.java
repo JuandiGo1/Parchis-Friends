@@ -5,7 +5,8 @@
 package parchisandfriends;
 
 import java.awt.Color;
-import javax.swing.JLabel;
+import javax.swing.JButton;
+
 
 /**
  *
@@ -15,19 +16,20 @@ class ficha {
 
     private Jugador owner;
     private Color color;
-    JLabel fich;
+    JButton ficha;
     int numero;
     int casilla;
     int posx, posy;
     boolean disponible = false;
 
-    public ficha(Jugador owner, Color color, int numero, int posx, int posy, int casilla) {
+    public ficha(Jugador owner, Color color, int numero, int posx, int posy, int casilla, JButton ficha) {
         this.owner = owner;
         this.color = color;
         this.numero = numero;
         this.posx = posx;
         this.posy = posy;
         this.casilla = casilla;
+        this.ficha=ficha;
     }
 
     public Jugador getOwner() {

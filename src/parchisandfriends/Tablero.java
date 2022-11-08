@@ -6,9 +6,11 @@ package parchisandfriends;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 
 /**
  *
@@ -16,18 +18,49 @@ import javax.swing.JPanel;
  */
 public class Tablero extends javax.swing.JFrame {
 
-    JButton ficha;
+    
 
-    public Tablero() {
+    public Tablero(int jugadores) {
         initComponents();
-        ficha = new javax.swing.JButton();
-        ficha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Amarillo1.png"))); // NOI18N
-        ficha.setBorderPainted(false);
-        ficha.setContentAreaFilled(false);
-        ficha.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        ficha.setBounds(0, 0, 40, 40);
-        tab.add(ficha);
-        ficha.setVisible(true);
+        switch (jugadores) {
+            case 2 -> {
+                v1.setVisible(false);
+                v2.setVisible(false);
+                v3.setVisible(false);
+                v4.setVisible(false);
+                m1.setVisible(false);
+                m2.setVisible(false);
+                m3.setVisible(false);
+                m4.setVisible(false);
+                organizar(1);
+                organizar(2);
+            }
+            case 3 -> {
+                v1.setVisible(false);
+                v2.setVisible(false);
+                v3.setVisible(false);
+                v4.setVisible(false);
+                organizar(1);
+                organizar(2);
+                organizar(3);
+            }
+            case 4 -> {
+                organizar(1);
+                organizar(2);
+                organizar(3);
+                organizar(4);
+            }
+
+        }
+
+//        ficha = new javax.swing.JButton();
+//        ficha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Amarillo1.png"))); // NOI18N
+//        ficha.setBorderPainted(false);
+//        ficha.setContentAreaFilled(false);
+//        ficha.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+//        ficha.setBounds(0, 0, 40, 40);
+//        tab.add(ficha);
+//        ficha.setVisible(true);
     }
 
     /**
@@ -41,24 +74,46 @@ public class Tablero extends javax.swing.JFrame {
 
         Pfondo = new javax.swing.JPanel();
         tab = new FondoTab();
-        ficha1 = new javax.swing.JButton();
-        ficha2 = new javax.swing.JButton();
+        r1 = new javax.swing.JButton();
+        a1 = new javax.swing.JButton();
+        r2 = new javax.swing.JButton();
+        r4 = new javax.swing.JButton();
+        r3 = new javax.swing.JButton();
+        a2 = new javax.swing.JButton();
+        a4 = new javax.swing.JButton();
+        a3 = new javax.swing.JButton();
+        m4 = new javax.swing.JButton();
+        v4 = new javax.swing.JButton();
+        v3 = new javax.swing.JButton();
+        v1 = new javax.swing.JButton();
+        v2 = new javax.swing.JButton();
+        m3 = new javax.swing.JButton();
+        m1 = new javax.swing.JButton();
+        m2 = new javax.swing.JButton();
         P1 = new javax.swing.JPanel();
         dado1 = new javax.swing.JToggleButton();
         dado2 = new javax.swing.JToggleButton();
         foto1 = new javax.swing.JLabel();
+        name4 = new javax.swing.JLabel();
+        LR = new javax.swing.JButton();
         P2 = new javax.swing.JPanel();
         dado3 = new javax.swing.JToggleButton();
         dado4 = new javax.swing.JToggleButton();
         foto2 = new javax.swing.JLabel();
+        name2 = new javax.swing.JLabel();
+        LA = new javax.swing.JButton();
         P3 = new javax.swing.JPanel();
         foto3 = new javax.swing.JLabel();
         dado5 = new javax.swing.JToggleButton();
         dado6 = new javax.swing.JToggleButton();
+        name3 = new javax.swing.JLabel();
+        LM = new javax.swing.JButton();
         P4 = new javax.swing.JPanel();
         foto4 = new javax.swing.JLabel();
         dado7 = new javax.swing.JToggleButton();
         dado8 = new javax.swing.JToggleButton();
+        name5 = new javax.swing.JLabel();
+        LV = new javax.swing.JButton();
         px = new javax.swing.JTextField();
         py = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
@@ -71,23 +126,163 @@ public class Tablero extends javax.swing.JFrame {
 
         Pfondo.setBackground(new java.awt.Color(127, 49, 49));
 
-        ficha1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Rojo1.png"))); // NOI18N
-        ficha1.setBorderPainted(false);
-        ficha1.setContentAreaFilled(false);
-        ficha1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        ficha1.addActionListener(new java.awt.event.ActionListener() {
+        r1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Rojo1.png"))); // NOI18N
+        r1.setBorderPainted(false);
+        r1.setContentAreaFilled(false);
+        r1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        r1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ficha1ActionPerformed(evt);
+                r1ActionPerformed(evt);
             }
         });
 
-        ficha2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Azul1.png"))); // NOI18N
-        ficha2.setBorderPainted(false);
-        ficha2.setContentAreaFilled(false);
-        ficha2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        ficha2.addActionListener(new java.awt.event.ActionListener() {
+        a1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Azul1.png"))); // NOI18N
+        a1.setBorderPainted(false);
+        a1.setContentAreaFilled(false);
+        a1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ficha2ActionPerformed(evt);
+                a1ActionPerformed(evt);
+            }
+        });
+
+        r2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Rojo1.png"))); // NOI18N
+        r2.setBorderPainted(false);
+        r2.setContentAreaFilled(false);
+        r2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        r2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                r2ActionPerformed(evt);
+            }
+        });
+
+        r4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Rojo1.png"))); // NOI18N
+        r4.setBorderPainted(false);
+        r4.setContentAreaFilled(false);
+        r4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        r4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                r4ActionPerformed(evt);
+            }
+        });
+
+        r3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Rojo1.png"))); // NOI18N
+        r3.setBorderPainted(false);
+        r3.setContentAreaFilled(false);
+        r3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        r3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                r3ActionPerformed(evt);
+            }
+        });
+
+        a2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Azul1.png"))); // NOI18N
+        a2.setBorderPainted(false);
+        a2.setContentAreaFilled(false);
+        a2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                a2ActionPerformed(evt);
+            }
+        });
+
+        a4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Azul1.png"))); // NOI18N
+        a4.setBorderPainted(false);
+        a4.setContentAreaFilled(false);
+        a4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                a4ActionPerformed(evt);
+            }
+        });
+
+        a3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Azul1.png"))); // NOI18N
+        a3.setBorderPainted(false);
+        a3.setContentAreaFilled(false);
+        a3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        a3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                a3ActionPerformed(evt);
+            }
+        });
+
+        m4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Amarillo1.png"))); // NOI18N
+        m4.setBorderPainted(false);
+        m4.setContentAreaFilled(false);
+        m4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        m4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m4ActionPerformed(evt);
+            }
+        });
+
+        v4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Verde1.png"))); // NOI18N
+        v4.setBorderPainted(false);
+        v4.setContentAreaFilled(false);
+        v4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        v4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                v4ActionPerformed(evt);
+            }
+        });
+
+        v3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Verde1.png"))); // NOI18N
+        v3.setBorderPainted(false);
+        v3.setContentAreaFilled(false);
+        v3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        v3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                v3ActionPerformed(evt);
+            }
+        });
+
+        v1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Verde1.png"))); // NOI18N
+        v1.setBorderPainted(false);
+        v1.setContentAreaFilled(false);
+        v1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        v1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                v1ActionPerformed(evt);
+            }
+        });
+
+        v2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Verde1.png"))); // NOI18N
+        v2.setBorderPainted(false);
+        v2.setContentAreaFilled(false);
+        v2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        v2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                v2ActionPerformed(evt);
+            }
+        });
+
+        m3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Amarillo1.png"))); // NOI18N
+        m3.setBorderPainted(false);
+        m3.setContentAreaFilled(false);
+        m3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        m3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m3ActionPerformed(evt);
+            }
+        });
+
+        m1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Amarillo1.png"))); // NOI18N
+        m1.setBorderPainted(false);
+        m1.setContentAreaFilled(false);
+        m1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        m1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m1ActionPerformed(evt);
+            }
+        });
+
+        m2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Amarillo1.png"))); // NOI18N
+        m2.setBorderPainted(false);
+        m2.setContentAreaFilled(false);
+        m2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        m2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                m2ActionPerformed(evt);
             }
         });
 
@@ -95,33 +290,96 @@ public class Tablero extends javax.swing.JFrame {
         tab.setLayout(tabLayout);
         tabLayout.setHorizontalGroup(
             tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabLayout.createSequentialGroup()
-                .addContainerGap(422, Short.MAX_VALUE)
-                .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(ficha2)
-                    .addComponent(ficha1))
-                .addGap(340, 340, 340))
+            .addGroup(tabLayout.createSequentialGroup()
+                .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(tabLayout.createSequentialGroup()
+                        .addGap(59, 59, 59)
+                        .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(a1)
+                            .addComponent(a3)
+                            .addComponent(r4)
+                            .addComponent(r1))
+                        .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(tabLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(a4)
+                                    .addComponent(a2)))
+                            .addGroup(tabLayout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(r2)
+                                    .addComponent(r3))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(v1)
+                        .addGap(26, 26, 26))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabLayout.createSequentialGroup()
+                        .addGap(192, 622, Short.MAX_VALUE)
+                        .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabLayout.createSequentialGroup()
+                                .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(m1)
+                                    .addComponent(m3))
+                                .addGap(18, 18, 18))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabLayout.createSequentialGroup()
+                                .addComponent(v3)
+                                .addGap(26, 26, 26)))))
+                .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(v2)
+                    .addComponent(m4)
+                    .addComponent(m2)
+                    .addComponent(v4))
+                .addGap(73, 73, 73))
         );
         tabLayout.setVerticalGroup(
             tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabLayout.createSequentialGroup()
-                .addGap(136, 136, 136)
-                .addComponent(ficha1)
-                .addGap(0, 0, 0)
-                .addComponent(ficha2)
-                .addContainerGap(536, Short.MAX_VALUE))
+                .addGap(60, 60, 60)
+                .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(tabLayout.createSequentialGroup()
+                        .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(a1)
+                            .addComponent(a2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(a3)
+                            .addComponent(a4)))
+                    .addGroup(tabLayout.createSequentialGroup()
+                        .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(m2)
+                            .addComponent(m1))
+                        .addGap(18, 18, 18)
+                        .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(m4)
+                            .addComponent(m3))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 425, Short.MAX_VALUE)
+                .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(r1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(r2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(v2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(v1, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
+                .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(r4)
+                        .addComponent(r3))
+                    .addComponent(v4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(v3, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(69, 69, 69))
         );
 
         P1.setBackground(new java.awt.Color(255, 51, 51));
 
-        dado1.setText("dado1");
+        dado1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado1.png"))); // NOI18N
+        dado1.setContentAreaFilled(false);
         dado1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dado1ActionPerformed(evt);
             }
         });
 
-        dado2.setText("dado1");
+        dado2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado1.png"))); // NOI18N
+        dado2.setContentAreaFilled(false);
         dado2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dado2ActionPerformed(evt);
@@ -129,20 +387,39 @@ public class Tablero extends javax.swing.JFrame {
         });
 
         foto1.setBackground(new java.awt.Color(204, 204, 204));
-        foto1.setText("foto");
+        foto1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Player1.png"))); // NOI18N
+
+        name4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        name4.setForeground(new java.awt.Color(255, 255, 255));
+        name4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        name4.setText("Jugador 1");
+
+        LR.setBackground(new java.awt.Color(204, 0, 0));
+        LR.setForeground(new java.awt.Color(255, 255, 255));
+        LR.setText("LANZAR");
+        LR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LRActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout P1Layout = new javax.swing.GroupLayout(P1);
         P1.setLayout(P1Layout);
         P1Layout.setHorizontalGroup(
             P1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(P1Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(foto1, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addGap(14, 14, 14)
+                .addGroup(P1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(foto1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                    .addGroup(P1Layout.createSequentialGroup()
+                        .addComponent(name4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dado1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(dado2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
+            .addComponent(LR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         P1Layout.setVerticalGroup(
             P1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,21 +431,26 @@ public class Tablero extends javax.swing.JFrame {
                             .addComponent(dado1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(dado2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(P1Layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(foto1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(foto1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(name4)))
+                .addGap(18, 18, 18)
+                .addComponent(LR))
         );
 
         P2.setBackground(new java.awt.Color(0, 102, 255));
 
-        dado3.setText("dado1");
+        dado3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado2.png"))); // NOI18N
+        dado3.setContentAreaFilled(false);
         dado3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dado3ActionPerformed(evt);
             }
         });
 
-        dado4.setText("dado1");
+        dado4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado2.png"))); // NOI18N
+        dado4.setContentAreaFilled(false);
         dado4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dado4ActionPerformed(evt);
@@ -176,7 +458,21 @@ public class Tablero extends javax.swing.JFrame {
         });
 
         foto2.setBackground(new java.awt.Color(204, 204, 204));
-        foto2.setText("foto");
+        foto2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Player2.png"))); // NOI18N
+
+        name2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        name2.setForeground(new java.awt.Color(255, 255, 255));
+        name2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        name2.setText("Jugador 2");
+
+        LA.setBackground(new java.awt.Color(0, 51, 204));
+        LA.setForeground(new java.awt.Color(255, 255, 255));
+        LA.setText("LANZAR");
+        LA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LAActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout P2Layout = new javax.swing.GroupLayout(P2);
         P2.setLayout(P2Layout);
@@ -184,12 +480,18 @@ public class Tablero extends javax.swing.JFrame {
             P2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(P2Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(foto2, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addGroup(P2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(P2Layout.createSequentialGroup()
+                        .addComponent(foto2, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
+                        .addGap(18, 18, 18))
+                    .addGroup(P2Layout.createSequentialGroup()
+                        .addComponent(name2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(dado3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(dado4, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
+            .addComponent(LA, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         P2Layout.setVerticalGroup(
             P2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,27 +503,46 @@ public class Tablero extends javax.swing.JFrame {
                             .addComponent(dado3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(dado4, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(P2Layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(foto2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(foto2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(name2)))
+                .addGap(18, 18, 18)
+                .addComponent(LA))
         );
 
         P3.setBackground(new java.awt.Color(255, 204, 0));
 
         foto3.setBackground(new java.awt.Color(204, 204, 204));
-        foto3.setText("foto");
+        foto3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Player3.png"))); // NOI18N
 
-        dado5.setText("dado1");
+        dado5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado3.png"))); // NOI18N
+        dado5.setContentAreaFilled(false);
         dado5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dado5ActionPerformed(evt);
             }
         });
 
-        dado6.setText("dado1");
+        dado6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado3.png"))); // NOI18N
+        dado6.setContentAreaFilled(false);
         dado6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dado6ActionPerformed(evt);
+            }
+        });
+
+        name3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        name3.setForeground(new java.awt.Color(255, 255, 255));
+        name3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        name3.setText("Jugador 3");
+
+        LM.setBackground(new java.awt.Color(255, 153, 0));
+        LM.setForeground(new java.awt.Color(255, 255, 255));
+        LM.setText("LANZAR");
+        LM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LMActionPerformed(evt);
             }
         });
 
@@ -231,12 +552,17 @@ public class Tablero extends javax.swing.JFrame {
             P3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(P3Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(foto3, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
+                .addGroup(P3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(P3Layout.createSequentialGroup()
+                        .addComponent(name3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(foto3, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(dado5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(dado6, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
+            .addComponent(LM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         P3Layout.setVerticalGroup(
             P3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -248,27 +574,46 @@ public class Tablero extends javax.swing.JFrame {
                             .addComponent(dado5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(dado6, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(P3Layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(foto3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(foto3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(name3)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(LM))
         );
 
         P4.setBackground(new java.awt.Color(0, 204, 51));
 
         foto4.setBackground(new java.awt.Color(204, 204, 204));
-        foto4.setText("foto");
+        foto4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Player4.png"))); // NOI18N
 
-        dado7.setText("dado1");
+        dado7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado4.png"))); // NOI18N
+        dado7.setContentAreaFilled(false);
         dado7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dado7ActionPerformed(evt);
             }
         });
 
-        dado8.setText("dado1");
+        dado8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado4.png"))); // NOI18N
+        dado8.setContentAreaFilled(false);
         dado8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dado8ActionPerformed(evt);
+            }
+        });
+
+        name5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        name5.setForeground(new java.awt.Color(255, 255, 255));
+        name5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        name5.setText("Jugador 4");
+
+        LV.setBackground(new java.awt.Color(0, 153, 0));
+        LV.setForeground(new java.awt.Color(255, 255, 255));
+        LV.setText("LANZAR");
+        LV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LVActionPerformed(evt);
             }
         });
 
@@ -278,12 +623,17 @@ public class Tablero extends javax.swing.JFrame {
             P4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(P4Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(foto4, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
+                .addGroup(P4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(foto4, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
+                    .addGroup(P4Layout.createSequentialGroup()
+                        .addComponent(name5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addComponent(dado7, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(dado8, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
+            .addComponent(LV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         P4Layout.setVerticalGroup(
             P4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -295,9 +645,12 @@ public class Tablero extends javax.swing.JFrame {
                             .addComponent(dado7, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(dado8, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(P4Layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(foto4, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(foto4, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(name5)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(LV))
         );
 
         px.setText("X");
@@ -335,39 +688,48 @@ public class Tablero extends javax.swing.JFrame {
         PfondoLayout.setHorizontalGroup(
             PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PfondoLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(P1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(P2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addGroup(PfondoLayout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addComponent(P2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PfondoLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(P1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)))
                 .addComponent(tab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PfondoLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                        .addGroup(PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(P4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(P3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(P3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(PfondoLayout.createSequentialGroup()
-                        .addGap(58, 58, 58)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(P4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PfondoLayout.createSequentialGroup()
+                        .addGap(91, 91, 91)
                         .addGroup(PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(py, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(px, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(54, 54, 54)
+                        .addGap(0, 0, 0)
                         .addGroup(PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton1)
                             .addComponent(jButton2)
-                            .addComponent(jButton3))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jButton3))))
+                .addGap(0, 0, 0))
         );
         PfondoLayout.setVerticalGroup(
             PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PfondoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(12, 12, 12)
+                .addGroup(PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(PfondoLayout.createSequentialGroup()
+                        .addComponent(P2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(P1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(PfondoLayout.createSequentialGroup()
                         .addComponent(P3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(140, 140, 140)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(px, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton1))
@@ -377,30 +739,107 @@ public class Tablero extends javax.swing.JFrame {
                             .addComponent(jButton2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 279, Short.MAX_VALUE)
-                        .addComponent(P4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(PfondoLayout.createSequentialGroup()
-                            .addComponent(P2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(P1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(tab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(17, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(P4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
-        getContentPane().add(Pfondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1470, 780));
+        getContentPane().add(Pfondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1490, 800));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void ficha2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ficha2ActionPerformed
-        System.out.println("ficha azul");
-    }//GEN-LAST:event_ficha2ActionPerformed
+    public void Dados(JToggleButton dado1, JToggleButton dado2) {
+        int d1 = (int) (Math.random() * 6) + 1;
+        int d2 = (int) (Math.random() * 6) + 1;
+        int result = d1 + d2;
 
-    private void ficha1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ficha1ActionPerformed
-        System.out.println("ficha roja");
-    }//GEN-LAST:event_ficha1ActionPerformed
+        Icon uno = new javax.swing.ImageIcon(getClass().getResource("/images/dado1.png"));
+        Icon dos = new javax.swing.ImageIcon(getClass().getResource("/images/dado2.png"));
+        Icon tres = new javax.swing.ImageIcon(getClass().getResource("/images/dado3.png"));
+        Icon cuatro = new javax.swing.ImageIcon(getClass().getResource("/images/dado4.png"));
+        Icon cinco = new javax.swing.ImageIcon(getClass().getResource("/images/dado5.png"));
+        Icon seis = new javax.swing.ImageIcon(getClass().getResource("/images/dado6.png"));
+
+        switch (d1) {
+            case 1:
+                dado1.setIcon(uno);
+                break;
+            case 2:
+                dado1.setIcon(dos);
+                break;
+            case 3:
+                dado1.setIcon(tres);
+                break;
+            case 4:
+                dado1.setIcon(cuatro);
+                break;
+            case 5:
+                dado1.setIcon(cinco);
+                break;
+            case 6:
+                dado1.setIcon(seis);
+                break;
+        }
+        switch (d2) {
+            case 1:
+                dado2.setIcon(uno);
+                break;
+            case 2:
+                dado2.setIcon(dos);
+                break;
+            case 3:
+                dado2.setIcon(tres);
+                break;
+            case 4:
+                dado2.setIcon(cuatro);
+                break;
+            case 5:
+                dado2.setIcon(cinco);
+                break;
+            case 6:
+                dado2.setIcon(seis);
+                break;
+        }
+
+    }
+
+    //ubicar fichas en sus posiciones iniciales
+    public final void organizar(int color) {
+        switch (color) {
+            case 1 -> {
+                
+                r1.setBounds(80, 556, 40, 40);
+                r2.setBounds(180, 556, 40, 40);
+                r3.setBounds(180, 656, 40, 40);
+                r4.setBounds(80, 656, 40, 40);
+                System.out.println("organizo");
+            }
+            case 2 -> {
+                
+               
+                a1.setBounds(80, 74, 40, 40);
+                a2.setBounds(180, 74, 40, 40);
+                a3.setBounds(180, 174, 40, 40);
+                a4.setBounds(80, 174, 40, 40);
+            }
+            case 3 -> {
+                m1.setBounds(600, 74, 40, 40);
+                m2.setBounds(700, 74, 40, 40);
+                m3.setBounds(700, 174, 40, 40);
+                m4.setBounds(600, 174, 40, 40);
+            }
+            case 4 -> {
+                v1.setBounds(600, 556, 40, 40);
+                v2.setBounds(700, 556, 40, 40);
+                v3.setBounds(700, 656, 40, 40);
+                v4.setBounds(600, 656, 40, 40);
+            }
+
+        }
+        //1.rojo - 2.azul - 3.amarillo - 4.Verde
+    }
 
     private void pxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pxActionPerformed
         // TODO add your handling code here:
@@ -410,21 +849,21 @@ public class Tablero extends javax.swing.JFrame {
         int x = Integer.parseInt(px.getText());
         int y = Integer.parseInt(py.getText());
 
-        ficha1.setBounds(x, y, 40, 40);
+        r1.setBounds(x, y, 40, 40);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int x = Integer.parseInt(px.getText());
         int y = Integer.parseInt(py.getText());
 
-        ficha2.setBounds(x, y, 40, 40);
+        a1.setBounds(x, y, 40, 40);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         int x = Integer.parseInt(px.getText());
         int y = Integer.parseInt(py.getText());
 
-        ficha.setBounds(x, y, 40, 40);
+        r2.setBounds(x, y, 40, 40);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void dado3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado3ActionPerformed
@@ -459,6 +898,86 @@ public class Tablero extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_dado8ActionPerformed
 
+    private void LAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LAActionPerformed
+        Dados(dado3, dado4);
+    }//GEN-LAST:event_LAActionPerformed
+
+    private void LRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LRActionPerformed
+        Dados(dado1, dado2);
+    }//GEN-LAST:event_LRActionPerformed
+
+    private void LMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LMActionPerformed
+        Dados(dado5, dado6);
+    }//GEN-LAST:event_LMActionPerformed
+
+    private void LVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LVActionPerformed
+        Dados(dado7, dado8);
+    }//GEN-LAST:event_LVActionPerformed
+
+    private void v3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_v3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_v3ActionPerformed
+
+    private void v4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_v4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_v4ActionPerformed
+
+    private void v2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_v2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_v2ActionPerformed
+
+    private void v1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_v1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_v1ActionPerformed
+
+    private void m2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_m2ActionPerformed
+
+    private void m1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_m1ActionPerformed
+
+    private void m3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_m3ActionPerformed
+
+    private void m4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_m4ActionPerformed
+
+    private void a2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_a2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_a2ActionPerformed
+
+    private void a1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_a1ActionPerformed
+        System.out.println("ficha azul");
+    }//GEN-LAST:event_a1ActionPerformed
+
+    private void a3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_a3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_a3ActionPerformed
+
+    private void a4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_a4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_a4ActionPerformed
+
+    private void r3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_r3ActionPerformed
+
+    private void r4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_r4ActionPerformed
+
+    private void r1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r1ActionPerformed
+        System.out.println("ficha roja");
+    }//GEN-LAST:event_r1ActionPerformed
+
+    private void r2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_r2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -489,7 +1008,7 @@ public class Tablero extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Tablero().setVisible(true);
+//                new Tablero().setVisible(true);
             }
         });
     }
@@ -509,11 +1028,19 @@ public class Tablero extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton LA;
+    private javax.swing.JButton LM;
+    private javax.swing.JButton LR;
+    private javax.swing.JButton LV;
     private javax.swing.JPanel P1;
     private javax.swing.JPanel P2;
     private javax.swing.JPanel P3;
     private javax.swing.JPanel P4;
     private javax.swing.JPanel Pfondo;
+    private javax.swing.JButton a1;
+    private javax.swing.JButton a2;
+    private javax.swing.JButton a3;
+    private javax.swing.JButton a4;
     private javax.swing.JToggleButton dado1;
     private javax.swing.JToggleButton dado2;
     private javax.swing.JToggleButton dado3;
@@ -522,8 +1049,6 @@ public class Tablero extends javax.swing.JFrame {
     private javax.swing.JToggleButton dado6;
     private javax.swing.JToggleButton dado7;
     private javax.swing.JToggleButton dado8;
-    private javax.swing.JButton ficha1;
-    private javax.swing.JButton ficha2;
     private javax.swing.JLabel foto1;
     private javax.swing.JLabel foto2;
     private javax.swing.JLabel foto3;
@@ -531,8 +1056,24 @@ public class Tablero extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton m1;
+    private javax.swing.JButton m2;
+    private javax.swing.JButton m3;
+    private javax.swing.JButton m4;
+    private javax.swing.JLabel name2;
+    private javax.swing.JLabel name3;
+    private javax.swing.JLabel name4;
+    private javax.swing.JLabel name5;
     private javax.swing.JTextField px;
     private javax.swing.JTextField py;
+    private javax.swing.JButton r1;
+    private javax.swing.JButton r2;
+    private javax.swing.JButton r3;
+    private javax.swing.JButton r4;
     public javax.swing.JPanel tab;
+    private javax.swing.JButton v1;
+    private javax.swing.JButton v2;
+    private javax.swing.JButton v3;
+    private javax.swing.JButton v4;
     // End of variables declaration//GEN-END:variables
 }

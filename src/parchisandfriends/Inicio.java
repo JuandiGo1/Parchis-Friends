@@ -334,19 +334,19 @@ public class Inicio extends javax.swing.JFrame {
 
     private void P2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_P2ActionPerformed
         dispose();
-        Tablero t = new Tablero();
+        Tablero t = new Tablero(2);
         t.setVisible(true);
     }//GEN-LAST:event_P2ActionPerformed
 
     private void P3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_P3ActionPerformed
         dispose();
-        Tablero t = new Tablero();
+        Tablero t = new Tablero(3);
         t.setVisible(true);
     }//GEN-LAST:event_P3ActionPerformed
 
     private void P4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_P4ActionPerformed
         dispose();
-        Tablero t = new Tablero();
+        Tablero t = new Tablero(4);
         t.setVisible(true);
     }//GEN-LAST:event_P4ActionPerformed
 
