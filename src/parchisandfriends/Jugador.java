@@ -9,12 +9,14 @@ import java.util.ArrayList;
 public class Jugador {
 
     String nick;
-    private ArrayList<ficha> fichas;
+    ArrayList<ficha> fichas = new ArrayList<>();
     int turno;
 
     public Jugador(String nick, int turn) {
         this.nick = nick;
 //        this.fichas = fichas;
         this.turno = turn;
+        
     }
+
 }

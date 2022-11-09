@@ -4,9 +4,18 @@
  */
 package parchisandfriends;
 
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,7 +28,12 @@ import javax.swing.JToggleButton;
  */
 public class Tablero extends javax.swing.JFrame {
 
+    static Clip clip;
+    int numeroficha = 1;
+    static ArrayList<Integer> valoresDados = new ArrayList<>();
+    static String ruta = "src\\recursos\\";
     static ArrayList<Icon> dados = new ArrayList<>();
+    static ArrayList<Icon> dadosp = new ArrayList<>(); //presionados
     static ArrayList<Jugador> Jugadores = new ArrayList<>();
     Icon uno = new javax.swing.ImageIcon(getClass().getResource("/images/dado1.png"));
     Icon dos = new javax.swing.ImageIcon(getClass().getResource("/images/dado2.png"));
@@ -27,7 +41,14 @@ public class Tablero extends javax.swing.JFrame {
     Icon cuatro = new javax.swing.ImageIcon(getClass().getResource("/images/dado4.png"));
     Icon cinco = new javax.swing.ImageIcon(getClass().getResource("/images/dado5.png"));
     Icon seis = new javax.swing.ImageIcon(getClass().getResource("/images/dado6.png"));
-    static int numero1,numero2, turno;
+
+    Icon unop = new javax.swing.ImageIcon(getClass().getResource("/images/dado1p.png"));
+    Icon dosp = new javax.swing.ImageIcon(getClass().getResource("/images/dado2p.png"));
+    Icon tresp = new javax.swing.ImageIcon(getClass().getResource("/images/dado3p.png"));
+    Icon cuatrop = new javax.swing.ImageIcon(getClass().getResource("/images/dado4p.png"));
+    Icon cincop = new javax.swing.ImageIcon(getClass().getResource("/images/dado5p.png"));
+    Icon seisp = new javax.swing.ImageIcon(getClass().getResource("/images/dado6p.png"));
+    static int numero1, numero2, turno;
 
     public Tablero(int jugadores) {
         initComponents();
@@ -37,6 +58,20 @@ public class Tablero extends javax.swing.JFrame {
         dados.add(cuatro);
         dados.add(cinco);
         dados.add(seis);
+        for (int i = 0; i < 8; i++) {
+            valoresDados.add(0);
+        }
+        dadosp.add(unop);
+        dadosp.add(dosp);
+        dadosp.add(tresp);
+        dadosp.add(cuatrop);
+        dadosp.add(cincop);
+        dadosp.add(seisp);
+        for (int i = 1; i <= jugadores; i++) {
+            Jugadores.add(new Jugador("Jugador " + i, i));
+            System.out.println(i);
+
+        }
         
         switch (jugadores) {
             case 2 -> {
@@ -50,6 +85,7 @@ public class Tablero extends javax.swing.JFrame {
                 m4.setVisible(false);
                 P3.setVisible(false);
                 P4.setVisible(false);
+
                 organizar(1);
                 organizar(2);
             }
@@ -71,23 +107,10 @@ public class Tablero extends javax.swing.JFrame {
             }
 
         }
-        for (int i = 1; i <= jugadores; i++) {
-            Jugadores.add(new Jugador("Jugador "+i,i));
-            System.out.println(i);
-            
-        }
-        
-        turno=1;
-        
 
-//        ficha = new javax.swing.JButton();
-//        ficha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Amarillo1.png"))); // NOI18N
-//        ficha.setBorderPainted(false);
-//        ficha.setContentAreaFilled(false);
-//        ficha.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-//        ficha.setBounds(0, 0, 40, 40);
-//        tab.add(ficha);
-//        ficha.setVisible(true);
+        turno = 1;
+        actPaneles(turno);
+
     }
 
     /**
@@ -123,32 +146,37 @@ public class Tablero extends javax.swing.JFrame {
         foto1 = new javax.swing.JLabel();
         name4 = new javax.swing.JLabel();
         LR = new javax.swing.JButton();
+        fin1 = new javax.swing.JButton();
         P2 = new javax.swing.JPanel();
         dado3 = new javax.swing.JToggleButton();
         dado4 = new javax.swing.JToggleButton();
         foto2 = new javax.swing.JLabel();
         name2 = new javax.swing.JLabel();
         LA = new javax.swing.JButton();
+        fin2 = new javax.swing.JButton();
         P3 = new javax.swing.JPanel();
         foto3 = new javax.swing.JLabel();
         dado5 = new javax.swing.JToggleButton();
         dado6 = new javax.swing.JToggleButton();
         name3 = new javax.swing.JLabel();
         LM = new javax.swing.JButton();
+        fin3 = new javax.swing.JButton();
         P4 = new javax.swing.JPanel();
         foto4 = new javax.swing.JLabel();
         dado7 = new javax.swing.JToggleButton();
         dado8 = new javax.swing.JToggleButton();
         name5 = new javax.swing.JLabel();
         LV = new javax.swing.JButton();
-        px = new javax.swing.JTextField();
-        py = new javax.swing.JTextField();
+        fin4 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        info = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -431,6 +459,14 @@ public class Tablero extends javax.swing.JFrame {
             }
         });
 
+        fin1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        fin1.setText("FINALIZAR TURNO");
+        fin1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fin1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout P1Layout = new javax.swing.GroupLayout(P1);
         P1.setLayout(P1Layout);
         P1Layout.setHorizontalGroup(
@@ -443,10 +479,13 @@ public class Tablero extends javax.swing.JFrame {
                         .addComponent(name4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(dado1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(dado2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
+                .addGroup(P1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(P1Layout.createSequentialGroup()
+                        .addComponent(dado1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(dado2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22))
+                    .addComponent(fin1, javax.swing.GroupLayout.Alignment.TRAILING)))
             .addComponent(LR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         P1Layout.setVerticalGroup(
@@ -454,7 +493,8 @@ public class Tablero extends javax.swing.JFrame {
             .addGroup(P1Layout.createSequentialGroup()
                 .addGroup(P1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(P1Layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
+                        .addComponent(fin1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(P1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(dado1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(dado2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -471,6 +511,7 @@ public class Tablero extends javax.swing.JFrame {
 
         dado3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado2.png"))); // NOI18N
         dado3.setContentAreaFilled(false);
+        dado3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         dado3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dado3ActionPerformed(evt);
@@ -502,6 +543,14 @@ public class Tablero extends javax.swing.JFrame {
             }
         });
 
+        fin2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        fin2.setText("FINALIZAR TURNO");
+        fin2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fin2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout P2Layout = new javax.swing.GroupLayout(P2);
         P2.setLayout(P2Layout);
         P2Layout.setHorizontalGroup(
@@ -510,23 +559,27 @@ public class Tablero extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addGroup(P2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(P2Layout.createSequentialGroup()
-                        .addComponent(foto2, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
+                        .addComponent(foto2, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
                         .addGap(18, 18, 18))
+                    .addComponent(name2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(P2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(P2Layout.createSequentialGroup()
-                        .addComponent(name2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addComponent(dado3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(dado4, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
-            .addComponent(LA, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(55, 55, 55)
+                        .addComponent(fin2))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, P2Layout.createSequentialGroup()
+                        .addComponent(dado3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(dado4, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(14, 14, 14))))
+            .addComponent(LA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         P2Layout.setVerticalGroup(
             P2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(P2Layout.createSequentialGroup()
                 .addGroup(P2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(P2Layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
+                        .addComponent(fin2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(P2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(dado3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(dado4, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -574,6 +627,14 @@ public class Tablero extends javax.swing.JFrame {
             }
         });
 
+        fin3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        fin3.setText("FINALIZAR TURNO");
+        fin3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fin3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout P3Layout = new javax.swing.GroupLayout(P3);
         P3.setLayout(P3Layout);
         P3Layout.setHorizontalGroup(
@@ -586,18 +647,22 @@ public class Tablero extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(foto3, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(dado5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(dado6, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
+                .addGroup(P3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(P3Layout.createSequentialGroup()
+                        .addComponent(dado5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(dado6, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22))
+                    .addComponent(fin3, javax.swing.GroupLayout.Alignment.TRAILING)))
             .addComponent(LM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         P3Layout.setVerticalGroup(
             P3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(P3Layout.createSequentialGroup()
-                .addGroup(P3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(P3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(P3Layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
+                        .addComponent(fin3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(P3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(dado5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(dado6, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -645,6 +710,14 @@ public class Tablero extends javax.swing.JFrame {
             }
         });
 
+        fin4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        fin4.setText("FINALIZAR TURNO");
+        fin4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fin4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout P4Layout = new javax.swing.GroupLayout(P4);
         P4.setLayout(P4Layout);
         P4Layout.setHorizontalGroup(
@@ -657,18 +730,22 @@ public class Tablero extends javax.swing.JFrame {
                         .addComponent(name5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
-                .addComponent(dado7, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(dado8, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
+                .addGroup(P4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(P4Layout.createSequentialGroup()
+                        .addComponent(dado7, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(dado8, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22))
+                    .addComponent(fin4, javax.swing.GroupLayout.Alignment.TRAILING)))
             .addComponent(LV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         P4Layout.setVerticalGroup(
             P4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(P4Layout.createSequentialGroup()
-                .addGroup(P4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(P4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(P4Layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
+                        .addComponent(fin4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(P4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(dado7, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(dado8, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -681,39 +758,55 @@ public class Tablero extends javax.swing.JFrame {
                 .addComponent(LV))
         );
 
-        px.setText("X");
-        px.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pxActionPerformed(evt);
-            }
-        });
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("PARTIDA");
 
-        py.setText("Y");
+        info.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        info.setForeground(new java.awt.Color(255, 255, 255));
+        info.setText("QUE EMPIECE EL JUEGO!");
 
-        jButton1.setText("roja");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        jPanel1.setBackground(new java.awt.Color(102, 0, 0));
 
-        jButton2.setText("azul");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
+        jButton1.setText("VOLVER");
 
-        jButton3.setText("Amarilla");
+        jButton2.setText("?");
+
+        jButton3.setBackground(new java.awt.Color(255, 0, 51));
+        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setText("X");
+        jButton3.setToolTipText("CERRAR");
+        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("PARTIDA");
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(110, 110, 110)
+                .addComponent(jButton3)
+                .addGap(56, 56, 56))
+        );
 
         javax.swing.GroupLayout PfondoLayout = new javax.swing.GroupLayout(Pfondo);
         Pfondo.setLayout(PfondoLayout);
@@ -729,27 +822,23 @@ public class Tablero extends javax.swing.JFrame {
                         .addComponent(P1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(PfondoLayout.createSequentialGroup()
                         .addGap(19, 19, 19)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PfondoLayout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(info, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PfondoLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(P3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(PfondoLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(P4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(PfondoLayout.createSequentialGroup()
-                        .addGap(85, 85, 85)
-                        .addGroup(PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(py, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(px, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, 0)
                         .addGroup(PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2)
-                            .addComponent(jButton3))))
-                .addGap(6, 6, 6))
+                            .addComponent(P4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(P3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(74, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PfondoLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         PfondoLayout.setVerticalGroup(
             PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -760,27 +849,21 @@ public class Tablero extends javax.swing.JFrame {
                         .addComponent(P2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(62, 62, 62)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(info)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(P1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(tab, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(PfondoLayout.createSequentialGroup()
                         .addComponent(P3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(px, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(py, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 363, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(P4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(5, 5, 5))
         );
 
-        getContentPane().add(Pfondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1490, 800));
+        getContentPane().add(Pfondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1520, 800));
 
         pack();
         setLocationRelativeTo(null);
@@ -795,6 +878,14 @@ public class Tablero extends javax.swing.JFrame {
                 r2.setBounds(180, 556, 40, 40);
                 r3.setBounds(180, 656, 40, 40);
                 r4.setBounds(80, 656, 40, 40);
+                for (int i = 0; i < 4; i++) {
+                    Jugadores.get(0).fichas.add(new ficha(Jugadores.get(0), 1, numeroficha, 0, 0));
+                    numeroficha++;
+                }
+                Jugadores.get(0).fichas.get(0).setBoton(r1);
+                Jugadores.get(0).fichas.get(1).setBoton(r2);
+                Jugadores.get(0).fichas.get(2).setBoton(r3);
+                Jugadores.get(0).fichas.get(3).setBoton(r4);
                 System.out.println("organizo");
             }
             case 2 -> {
@@ -803,109 +894,212 @@ public class Tablero extends javax.swing.JFrame {
                 a2.setBounds(180, 74, 40, 40);
                 a3.setBounds(180, 174, 40, 40);
                 a4.setBounds(80, 174, 40, 40);
+                for (int i = 0; i < 4; i++) {
+                    Jugadores.get(1).fichas.add(new ficha(Jugadores.get(1), 1, numeroficha, 0, 0));
+                    numeroficha++;
+                }
+                Jugadores.get(1).fichas.get(0).setBoton(a1);
+                Jugadores.get(1).fichas.get(1).setBoton(a2);
+                Jugadores.get(1).fichas.get(2).setBoton(a3);
+                Jugadores.get(1).fichas.get(3).setBoton(a4);
             }
             case 3 -> {
                 m1.setBounds(600, 74, 40, 40);
                 m2.setBounds(700, 74, 40, 40);
                 m3.setBounds(700, 174, 40, 40);
                 m4.setBounds(600, 174, 40, 40);
+                for (int i = 0; i < 4; i++) {
+                    Jugadores.get(2).fichas.add(new ficha(Jugadores.get(2), 1, numeroficha, 0, 0));
+                    numeroficha++;
+                }
+                Jugadores.get(2).fichas.get(0).setBoton(m1);
+                Jugadores.get(2).fichas.get(1).setBoton(m2);
+                Jugadores.get(2).fichas.get(2).setBoton(m3);
+                Jugadores.get(2).fichas.get(3).setBoton(m4);
             }
             case 4 -> {
                 v1.setBounds(600, 556, 40, 40);
                 v2.setBounds(700, 556, 40, 40);
                 v3.setBounds(700, 656, 40, 40);
                 v4.setBounds(600, 656, 40, 40);
+                for (int i = 0; i < 4; i++) {
+                    Jugadores.get(3).fichas.add(new ficha(Jugadores.get(3), 1, numeroficha, 0, 0));
+                    numeroficha++;
+                }
+                Jugadores.get(3).fichas.get(0).setBoton(v1);
+                Jugadores.get(3).fichas.get(1).setBoton(v2);
+                Jugadores.get(3).fichas.get(2).setBoton(v3);
+                Jugadores.get(3).fichas.get(3).setBoton(v4);
             }
 
         }
         //1.rojo - 2.azul - 3.amarillo - 4.Verde
     }
 
-    private void pxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_pxActionPerformed
+    public void sonido(String archivo) {
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int x = Integer.parseInt(px.getText());
-        int y = Integer.parseInt(py.getText());
+        try {
+            clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/recursos/dices.mp3")));
+            clip.start();
 
-        r1.setBounds(x, y, 40, 40);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+            System.out.println("no se pudo");
+        }
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        int x = Integer.parseInt(px.getText());
-        int y = Integer.parseInt(py.getText());
+    }
 
-        a1.setBounds(x, y, 40, 40);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    //Activar y desactivar paneles de los jugadores según el turno. MODO offline
+    public void actPaneles(int turno) {
+        switch (turno) {
+            case 1:
+                for (Component component : P1.getComponents()) {
+                    component.setEnabled(true);
+                }
+                for (Component component : P2.getComponents()) {
+                    component.setEnabled(false);
+                }
+                for (Component component : P3.getComponents()) {
+                    component.setEnabled(false);
+                }
+                for (Component component : P4.getComponents()) {
+                    component.setEnabled(false);
+                }
+                info.setText("Turno de " + Jugadores.get(0).nick);
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        int x = Integer.parseInt(px.getText());
-        int y = Integer.parseInt(py.getText());
+                break;
+            case 2:
+                for (Component component : P1.getComponents()) {
+                    component.setEnabled(false);
+                }
+                for (Component component : P2.getComponents()) {
+                    component.setEnabled(true);
+                }
+                for (Component component : P3.getComponents()) {
+                    component.setEnabled(false);
+                }
+                for (Component component : P4.getComponents()) {
+                    component.setEnabled(false);
+                }
+                info.setText("Turno de " + Jugadores.get(1).nick);
+                break;
+            case 3:
+                for (Component component : P1.getComponents()) {
+                    component.setEnabled(false);
+                }
+                for (Component component : P2.getComponents()) {
+                    component.setEnabled(false);
+                }
+                for (Component component : P3.getComponents()) {
+                    component.setEnabled(true);
+                }
+                for (Component component : P4.getComponents()) {
+                    component.setEnabled(false);
+                }
+                info.setText("Turno de " + Jugadores.get(2).nick);
+                break;
+            case 4:
+                for (Component component : P1.getComponents()) {
+                    component.setEnabled(false);
+                }
+                for (Component component : P2.getComponents()) {
+                    component.setEnabled(false);
+                }
+                for (Component component : P3.getComponents()) {
+                    component.setEnabled(false);
+                }
+                for (Component component : P4.getComponents()) {
+                    component.setEnabled(true);
+                }
+                info.setText("Turno de " + Jugadores.get(3).nick);
+                break;
 
-        r2.setBounds(x, y, 40, 40);
-    }//GEN-LAST:event_jButton3ActionPerformed
+        }
+    }
 
+    //aumentará o reseteará el turno dependiendo la cantidad de jugadores
+    public void aumentarTurno() {
+        switch (Jugadores.size()) {
+            case 2:
+                if (turno > 1) {
+                    turno = 1;
+                    break;
+                }
+                turno++;
+                break;
+            case 3:
+                if (turno > 2) {
+                    turno = 1;
+                    break;
+                }
+                turno++;
+                break;
+            case 4:
+                if (turno > 3) {
+                    turno = 1;
+                    break;
+                }
+                turno++;
+                break;
+        }
+    }
     private void dado3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado3ActionPerformed
-        // TODO add your handling code here:
+        System.out.println(valoresDados.get(2));
     }//GEN-LAST:event_dado3ActionPerformed
 
     private void dado4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado4ActionPerformed
-        // TODO add your handling code here:
+        System.out.println(valoresDados.get(3));
     }//GEN-LAST:event_dado4ActionPerformed
 
     private void dado1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado1ActionPerformed
-        // TODO add your handling code here:
+        System.out.println(valoresDados.get(0));
     }//GEN-LAST:event_dado1ActionPerformed
 
     private void dado2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado2ActionPerformed
-        // TODO add your handling code here:
+        System.out.println(valoresDados.get(1));
     }//GEN-LAST:event_dado2ActionPerformed
 
     private void dado5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado5ActionPerformed
-        // TODO add your handling code here:
+        System.out.println(valoresDados.get(4));
     }//GEN-LAST:event_dado5ActionPerformed
 
     private void dado6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado6ActionPerformed
-        // TODO add your handling code here:
+        System.out.println(valoresDados.get(5));
     }//GEN-LAST:event_dado6ActionPerformed
 
     private void dado7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado7ActionPerformed
-        // TODO add your handling code here:
+        System.out.println(valoresDados.get(6));
     }//GEN-LAST:event_dado7ActionPerformed
 
     private void dado8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado8ActionPerformed
-        // TODO add your handling code here:
+        System.out.println(valoresDados.get(7));
     }//GEN-LAST:event_dado8ActionPerformed
 
-    public static Jugador BuscarTurno(int t){
-        for(Jugador J: Jugadores ){
-            if(J.turno==t)
-                return J;
-        }
-        return null;
-    }
-    
+
     private void LAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LAActionPerformed
-        Dados dp2 = new Dados(dado3, dado4);
+        Dados dp2 = new Dados(dado3, dado4, 2, 3);
+        sonido("dices");
         dp2.start();
 
     }//GEN-LAST:event_LAActionPerformed
 
     private void LRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LRActionPerformed
-        Dados dp1 = new Dados(dado1, dado2);
+        Dados dp1 = new Dados(dado1, dado2, 0, 1);
+        sonido("dices.mp3");
         dp1.start();
 
     }//GEN-LAST:event_LRActionPerformed
 
     private void LMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LMActionPerformed
-        Dados dp3 = new Dados(dado5, dado6);
+        Dados dp3 = new Dados(dado5, dado6, 4, 5);
+        sonido("dices");
         dp3.start();
 
     }//GEN-LAST:event_LMActionPerformed
 
     private void LVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LVActionPerformed
-        Dados dp4 = new Dados(dado7, dado8);
+        Dados dp4 = new Dados(dado7, dado8, 6, 7);
+        sonido("dices");
         dp4.start();
     }//GEN-LAST:event_LVActionPerformed
 
@@ -972,6 +1166,31 @@ public class Tablero extends javax.swing.JFrame {
     private void r2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_r2ActionPerformed
+
+    private void fin2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fin2ActionPerformed
+
+        aumentarTurno();
+        actPaneles(turno);
+    }//GEN-LAST:event_fin2ActionPerformed
+
+    private void fin1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fin1ActionPerformed
+        aumentarTurno();
+        actPaneles(turno);
+    }//GEN-LAST:event_fin1ActionPerformed
+
+    private void fin3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fin3ActionPerformed
+        aumentarTurno();
+        actPaneles(turno);
+    }//GEN-LAST:event_fin3ActionPerformed
+
+    private void fin4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fin4ActionPerformed
+        aumentarTurno();
+        actPaneles(turno);
+    }//GEN-LAST:event_fin4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1044,14 +1263,20 @@ public class Tablero extends javax.swing.JFrame {
     private javax.swing.JToggleButton dado6;
     private javax.swing.JToggleButton dado7;
     private javax.swing.JToggleButton dado8;
+    private javax.swing.JButton fin1;
+    private javax.swing.JButton fin2;
+    private javax.swing.JButton fin3;
+    private javax.swing.JButton fin4;
     private javax.swing.JLabel foto1;
     private javax.swing.JLabel foto2;
     private javax.swing.JLabel foto3;
     private javax.swing.JLabel foto4;
+    private javax.swing.JLabel info;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JButton m1;
     private javax.swing.JButton m2;
     private javax.swing.JButton m3;
@@ -1060,8 +1285,6 @@ public class Tablero extends javax.swing.JFrame {
     private javax.swing.JLabel name3;
     private javax.swing.JLabel name4;
     private javax.swing.JLabel name5;
-    private javax.swing.JTextField px;
-    private javax.swing.JTextField py;
     private javax.swing.JButton r1;
     private javax.swing.JButton r2;
     private javax.swing.JButton r3;

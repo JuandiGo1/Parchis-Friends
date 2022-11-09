@@ -12,12 +12,14 @@ public class NodoPadre {
     int numero;
     int centroX;
     int centroY;
-    boolean seguro;
+    boolean seguro, salida, entrada;
     int color; //0 si no tiene, 1 para rojo, 2 para azul, 3 para amarillo, 4 para verde
+    int cantFichas;
+    String dondeSumar;
     NodoPadre next;
     NodoPadre prev;
 
-    public NodoPadre(int numero, int centroX, int centroY, boolean seguro, int color) {
+    public NodoPadre(int numero, int centroX, int centroY, boolean seguro, int color, boolean salida, boolean entrada, String donde) {
         this.numero = numero;
         this.centroX = centroX;
         this.centroY = centroY;
@@ -25,27 +27,13 @@ public class NodoPadre {
         this.color = color;
         this.next = null;
         this.prev = null;
+        this.salida=salida;
+        this.entrada=entrada;
+        this.dondeSumar=donde;
     }
     
     
-    public class NodoSimple extends NodoPadre{ 
 
-        public NodoSimple(int numero, int centroX, int centroY, boolean seguro, int color) {
-            super(numero, centroX, centroY, seguro, color);
-            
-        }
-        
-    }
-    
-     public class NodoPro extends NodoPadre{ 
-         NodoSimple entrada;
-
-        public NodoPro(int numero, int centroX, int centroY, boolean seguro, int color) {
-            super(numero, centroX, centroY, seguro, color);
-        }
-         
-        
-    }
     
 }
 

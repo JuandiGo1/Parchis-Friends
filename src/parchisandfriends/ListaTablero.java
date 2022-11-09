@@ -9,8 +9,9 @@ package parchisandfriends;
  * @author ASUS TUF GAMING F15
  */
 public class ListaTablero {
-    NodoPadre head= null;
-    NodoPadre tail= null;
+    static NodoPadre head= null;
+    static NodoPadre tail= null;
+    
     
     public void add(NodoPadre nodo){
         NodoPadre P= nodo;
@@ -25,6 +26,24 @@ public class ListaTablero {
         
         head.prev = tail;
         tail.next = head;
+    }
+    
+    public static NodoPadre BuscarPorNumero(int num){
+        NodoPadre P= head;
+        NodoPadre Q= null;
+        if(head==null){
+            System.out.println("Lista Vacia");
+            return null;
+        }
+        do{
+            if(P.numero==num){
+                Q=P;
+                return Q;
+            }
+            P=P.next;
+            
+        }while(P!=head);
+        return Q;
     }
     
     
