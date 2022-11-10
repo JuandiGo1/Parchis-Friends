@@ -21,6 +21,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+import static parchisandfriends.Inicio.casillas;
 
 /**
  *
@@ -72,7 +73,7 @@ public class Tablero extends javax.swing.JFrame {
             System.out.println(i);
 
         }
-        
+
         switch (jugadores) {
             case 2 -> {
                 v1.setVisible(false);
@@ -85,7 +86,10 @@ public class Tablero extends javax.swing.JFrame {
                 m4.setVisible(false);
                 P3.setVisible(false);
                 P4.setVisible(false);
-
+                Jugadores.get(0).casillaSalida = casillas.BuscarPorNumero(1);
+                System.out.println(Jugadores.get(0).casillaSalida.numero);
+                Jugadores.get(1).casillaSalida = casillas.BuscarPorNumero(52);
+                System.out.println(Jugadores.get(1).casillaSalida.numero);
                 organizar(1);
                 organizar(2);
             }
@@ -95,11 +99,18 @@ public class Tablero extends javax.swing.JFrame {
                 v3.setVisible(false);
                 v4.setVisible(false);
                 P4.setVisible(false);
+                Jugadores.get(0).casillaSalida = casillas.BuscarPorNumero(1);
+                Jugadores.get(1).casillaSalida = casillas.BuscarPorNumero(52);
+                Jugadores.get(2).casillaSalida = casillas.BuscarPorNumero(35);
                 organizar(1);
                 organizar(2);
                 organizar(3);
             }
             case 4 -> {
+                Jugadores.get(0).casillaSalida = casillas.BuscarPorNumero(1);
+                Jugadores.get(1).casillaSalida = casillas.BuscarPorNumero(52);
+                Jugadores.get(2).casillaSalida = casillas.BuscarPorNumero(35);
+                Jugadores.get(3).casillaSalida = casillas.BuscarPorNumero(18);
                 organizar(1);
                 organizar(2);
                 organizar(3);
@@ -428,6 +439,7 @@ public class Tablero extends javax.swing.JFrame {
 
         dado1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado1.png"))); // NOI18N
         dado1.setContentAreaFilled(false);
+        dado1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         dado1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dado1ActionPerformed(evt);
@@ -436,6 +448,7 @@ public class Tablero extends javax.swing.JFrame {
 
         dado2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado1.png"))); // NOI18N
         dado2.setContentAreaFilled(false);
+        dado2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         dado2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dado2ActionPerformed(evt);
@@ -453,6 +466,7 @@ public class Tablero extends javax.swing.JFrame {
         LR.setBackground(new java.awt.Color(204, 0, 0));
         LR.setForeground(new java.awt.Color(255, 255, 255));
         LR.setText("LANZAR");
+        LR.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         LR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LRActionPerformed(evt);
@@ -461,6 +475,8 @@ public class Tablero extends javax.swing.JFrame {
 
         fin1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         fin1.setText("FINALIZAR TURNO");
+        fin1.setEnabled(false);
+        fin1.setFocusCycleRoot(true);
         fin1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fin1ActionPerformed(evt);
@@ -520,6 +536,7 @@ public class Tablero extends javax.swing.JFrame {
 
         dado4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado2.png"))); // NOI18N
         dado4.setContentAreaFilled(false);
+        dado4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         dado4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dado4ActionPerformed(evt);
@@ -537,6 +554,7 @@ public class Tablero extends javax.swing.JFrame {
         LA.setBackground(new java.awt.Color(0, 51, 204));
         LA.setForeground(new java.awt.Color(255, 255, 255));
         LA.setText("LANZAR");
+        LA.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         LA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LAActionPerformed(evt);
@@ -545,6 +563,7 @@ public class Tablero extends javax.swing.JFrame {
 
         fin2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         fin2.setText("FINALIZAR TURNO");
+        fin2.setEnabled(false);
         fin2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fin2ActionPerformed(evt);
@@ -599,6 +618,7 @@ public class Tablero extends javax.swing.JFrame {
 
         dado5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado3.png"))); // NOI18N
         dado5.setContentAreaFilled(false);
+        dado5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         dado5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dado5ActionPerformed(evt);
@@ -607,6 +627,7 @@ public class Tablero extends javax.swing.JFrame {
 
         dado6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado3.png"))); // NOI18N
         dado6.setContentAreaFilled(false);
+        dado6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         dado6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dado6ActionPerformed(evt);
@@ -621,6 +642,7 @@ public class Tablero extends javax.swing.JFrame {
         LM.setBackground(new java.awt.Color(255, 153, 0));
         LM.setForeground(new java.awt.Color(255, 255, 255));
         LM.setText("LANZAR");
+        LM.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         LM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LMActionPerformed(evt);
@@ -629,6 +651,7 @@ public class Tablero extends javax.swing.JFrame {
 
         fin3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         fin3.setText("FINALIZAR TURNO");
+        fin3.setEnabled(false);
         fin3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fin3ActionPerformed(evt);
@@ -682,6 +705,7 @@ public class Tablero extends javax.swing.JFrame {
 
         dado7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado4.png"))); // NOI18N
         dado7.setContentAreaFilled(false);
+        dado7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         dado7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dado7ActionPerformed(evt);
@@ -690,6 +714,7 @@ public class Tablero extends javax.swing.JFrame {
 
         dado8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado4.png"))); // NOI18N
         dado8.setContentAreaFilled(false);
+        dado8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         dado8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dado8ActionPerformed(evt);
@@ -704,6 +729,7 @@ public class Tablero extends javax.swing.JFrame {
         LV.setBackground(new java.awt.Color(0, 153, 0));
         LV.setForeground(new java.awt.Color(255, 255, 255));
         LV.setText("LANZAR");
+        LV.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         LV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LVActionPerformed(evt);
@@ -712,6 +738,7 @@ public class Tablero extends javax.swing.JFrame {
 
         fin4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         fin4.setText("FINALIZAR TURNO");
+        fin4.setEnabled(false);
         fin4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fin4ActionPerformed(evt);
@@ -956,6 +983,9 @@ public class Tablero extends javax.swing.JFrame {
                 for (Component component : P1.getComponents()) {
                     component.setEnabled(true);
                 }
+                if (!Jugadores.get(0).pasar) {
+                    fin1.setEnabled(false);
+                }
                 for (Component component : P2.getComponents()) {
                     component.setEnabled(false);
                 }
@@ -975,6 +1005,9 @@ public class Tablero extends javax.swing.JFrame {
                 for (Component component : P2.getComponents()) {
                     component.setEnabled(true);
                 }
+                if (!Jugadores.get(1).pasar) {
+                    fin2.setEnabled(false);
+                }
                 for (Component component : P3.getComponents()) {
                     component.setEnabled(false);
                 }
@@ -993,6 +1026,9 @@ public class Tablero extends javax.swing.JFrame {
                 for (Component component : P3.getComponents()) {
                     component.setEnabled(true);
                 }
+                if (!Jugadores.get(2).pasar) {
+                    fin3.setEnabled(false);
+                }
                 for (Component component : P4.getComponents()) {
                     component.setEnabled(false);
                 }
@@ -1010,6 +1046,9 @@ public class Tablero extends javax.swing.JFrame {
                 }
                 for (Component component : P4.getComponents()) {
                     component.setEnabled(true);
+                }
+                if (!Jugadores.get(3).pasar) {
+                    fin4.setEnabled(false);
                 }
                 info.setText("Turno de " + Jugadores.get(3).nick);
                 break;
@@ -1077,28 +1116,28 @@ public class Tablero extends javax.swing.JFrame {
 
 
     private void LAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LAActionPerformed
-        Dados dp2 = new Dados(dado3, dado4, 2, 3);
+        Dados dp2 = new Dados(dado3, dado4, 2, 3, fin2, LA, Jugadores.get(1));
         sonido("dices");
         dp2.start();
 
     }//GEN-LAST:event_LAActionPerformed
 
     private void LRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LRActionPerformed
-        Dados dp1 = new Dados(dado1, dado2, 0, 1);
+        Dados dp1 = new Dados(dado1, dado2, 0, 1, fin1, LR, Jugadores.get(0));
         sonido("dices.mp3");
         dp1.start();
 
     }//GEN-LAST:event_LRActionPerformed
 
     private void LMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LMActionPerformed
-        Dados dp3 = new Dados(dado5, dado6, 4, 5);
+        Dados dp3 = new Dados(dado5, dado6, 4, 5, fin3, LM, Jugadores.get(2));
         sonido("dices");
         dp3.start();
 
     }//GEN-LAST:event_LMActionPerformed
 
     private void LVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LVActionPerformed
-        Dados dp4 = new Dados(dado7, dado8, 6, 7);
+        Dados dp4 = new Dados(dado7, dado8, 6, 7, fin4, LV, Jugadores.get(3));
         sonido("dices");
         dp4.start();
     }//GEN-LAST:event_LVActionPerformed

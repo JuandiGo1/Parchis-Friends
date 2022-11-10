@@ -28,7 +28,7 @@ public class ListaTablero {
         tail.next = head;
     }
     
-    public static NodoPadre BuscarPorNumero(int num){
+    public  NodoPadre BuscarPorNumero(int num){
         NodoPadre P= head;
         NodoPadre Q= null;
         if(head==null){
@@ -38,6 +38,7 @@ public class ListaTablero {
         do{
             if(P.numero==num){
                 Q=P;
+                System.out.println(Q.numero);
                 return Q;
             }
             P=P.next;

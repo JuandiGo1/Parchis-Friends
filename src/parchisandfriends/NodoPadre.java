@@ -4,17 +4,20 @@
  */
 package parchisandfriends;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author ASUS TUF GAMING F15
  */
 public class NodoPadre {
+
     int numero;
     int centroX;
     int centroY;
     boolean seguro, salida, entrada;
     int color; //0 si no tiene, 1 para rojo, 2 para azul, 3 para amarillo, 4 para verde
-    int cantFichas;
+    ArrayList<ficha> cantFichas = new ArrayList<>();
     String dondeSumar;
     NodoPadre next;
     NodoPadre prev;
@@ -27,13 +30,9 @@ public class NodoPadre {
         this.color = color;
         this.next = null;
         this.prev = null;
-        this.salida=salida;
-        this.entrada=entrada;
-        this.dondeSumar=donde;
+        this.salida = salida;
+        this.entrada = entrada;
+        this.dondeSumar = donde;
     }
-    
-    
 
-    
 }
-
