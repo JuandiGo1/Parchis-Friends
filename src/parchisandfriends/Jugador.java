@@ -1,6 +1,7 @@
 package parchisandfriends;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
@@ -22,32 +23,53 @@ public class Jugador {
     }
 
     public void sacar() {
+        ArrayList<ficha> agregar = new ArrayList<>();
+        ArrayList<ficha> remover = new ArrayList<>();
+        int tam = casillaSalida.cantFichas.size();
         for (ficha f : fichas) {
             if (f.enCasa) {
                 if (!casillaSalida.cantFichas.isEmpty()) {
-                    for (ficha p : casillaSalida.cantFichas) {
-                        if (p.getColor() != f.getColor()) {
-                            p.encarcelar();
-                            casillaSalida.cantFichas.remove(p);
+                    for (ficha k : casillaSalida.cantFichas) {
+                        if (k.getColor() != f.getColor()) {
+                            k.encarcelar();
+                            remover.add(k);
+                            tam--;
+
                         } else {
-                            if (casillaSalida.cantFichas.size() == 1) {
-                                casillaSalida.cantFichas.add(f); //reemplazar la ficha invasora por la que sale
+                            System.out.println("entra");
+                            System.out.println(tam);
+                            if (tam == 1) {
+                                System.out.println("prueba 1 si");
+                                
                                 f.casilla = casillaSalida.numero;
-                                switch (casillaSalida.cantFichas.indexOf(f)) {
-                                    case 0:
-                                        f.setPos(casillaSalida.centroX, casillaSalida.centroY, true, casillaSalida.dondeSumar, true);
-                                        break;
-                                    case 1:
-                                        f.setPos(casillaSalida.centroX, casillaSalida.centroY, true, casillaSalida.dondeSumar, false);
-                                        break;
-                                }
+                                f.enCasa=false;
+//                                switch (tam) {
+//                                    case 0:
+//                                        f.setPos(casillaSalida.centroX, casillaSalida.centroY, true, casillaSalida.dondeSumar, true);
+//                                        break;
+//                                    case 1:
+//                                        
+//                                        break;
+//                                }
+                                f.setPos(casillaSalida.centroX, casillaSalida.centroY, true, casillaSalida.dondeSumar, false);
+                                agregar.add(f);
+                                
+                                tam++;
 
                             }
                         }
 
                     }
+                    casillaSalida.cantFichas.removeAll(remover);
+                    casillaSalida.cantFichas.addAll(agregar);
                 } else {
+                    f.enCasa=false;
+                    f.casilla = casillaSalida.numero;
                     f.setPos(casillaSalida.centroX, casillaSalida.centroY, true, casillaSalida.dondeSumar, true);
+                    System.out.println("saca ficha");
+                    casillaSalida.cantFichas.add(f);
+                    tam++;
+
                 }
             }
         }

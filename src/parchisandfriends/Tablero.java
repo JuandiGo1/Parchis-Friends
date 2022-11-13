@@ -7,6 +7,8 @@ package parchisandfriends;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -51,8 +53,35 @@ public class Tablero extends javax.swing.JFrame {
     Icon seisp = new javax.swing.ImageIcon(getClass().getResource("/images/dado6p.png"));
     static int numero1, numero2, turno;
 
+    //Botones de fichas:
+    //rojas
+    JButton r1 = new javax.swing.JButton();
+    JButton r2 = new javax.swing.JButton();
+    JButton r3 = new javax.swing.JButton();
+    JButton r4 = new javax.swing.JButton();
+
+    //azules
+    JButton a1 = new javax.swing.JButton();
+    JButton a2 = new javax.swing.JButton();
+    JButton a3 = new javax.swing.JButton();
+    JButton a4 = new javax.swing.JButton();
+
+    //amarillas
+    JButton m1 = new javax.swing.JButton();
+    JButton m2 = new javax.swing.JButton();
+    JButton m3 = new javax.swing.JButton();
+    JButton m4 = new javax.swing.JButton();
+
+    //verdes
+    JButton v1 = new javax.swing.JButton();
+    JButton v2 = new javax.swing.JButton();
+    JButton v3 = new javax.swing.JButton();
+    JButton v4 = new javax.swing.JButton();
+
+    //verdes
     public Tablero(int jugadores) {
         initComponents();
+
         dados.add(uno);
         dados.add(dos);
         dados.add(tres);
@@ -70,7 +99,7 @@ public class Tablero extends javax.swing.JFrame {
         dadosp.add(seisp);
         for (int i = 1; i <= jugadores; i++) {
             Jugadores.add(new Jugador("Jugador " + i, i));
-            System.out.println(i);
+            //System.out.println(i);
 
         }
 
@@ -86,10 +115,8 @@ public class Tablero extends javax.swing.JFrame {
                 m4.setVisible(false);
                 P3.setVisible(false);
                 P4.setVisible(false);
-                Jugadores.get(0).casillaSalida = casillas.BuscarPorNumero(1);
-                System.out.println(Jugadores.get(0).casillaSalida.numero);
-                Jugadores.get(1).casillaSalida = casillas.BuscarPorNumero(52);
-                System.out.println(Jugadores.get(1).casillaSalida.numero);
+                Jugadores.get(0).casillaSalida = BuscarPorNum(1);
+                Jugadores.get(1).casillaSalida = BuscarPorNum(52);
                 organizar(1);
                 organizar(2);
             }
@@ -99,18 +126,21 @@ public class Tablero extends javax.swing.JFrame {
                 v3.setVisible(false);
                 v4.setVisible(false);
                 P4.setVisible(false);
-                Jugadores.get(0).casillaSalida = casillas.BuscarPorNumero(1);
-                Jugadores.get(1).casillaSalida = casillas.BuscarPorNumero(52);
-                Jugadores.get(2).casillaSalida = casillas.BuscarPorNumero(35);
+                Jugadores.get(0).casillaSalida = BuscarPorNum(1);
+                Jugadores.get(1).casillaSalida = BuscarPorNum(52);
+                Jugadores.get(2).casillaSalida = BuscarPorNum(35);
                 organizar(1);
                 organizar(2);
                 organizar(3);
             }
             case 4 -> {
-                Jugadores.get(0).casillaSalida = casillas.BuscarPorNumero(1);
-                Jugadores.get(1).casillaSalida = casillas.BuscarPorNumero(52);
-                Jugadores.get(2).casillaSalida = casillas.BuscarPorNumero(35);
-                Jugadores.get(3).casillaSalida = casillas.BuscarPorNumero(18);
+                Jugadores.get(0).casillaSalida = BuscarPorNum(1);
+                Jugadores.get(1).casillaSalida = BuscarPorNum(52);
+                Jugadores.get(2).casillaSalida = BuscarPorNum(35);
+                Jugadores.get(3).casillaSalida = BuscarPorNum(18);
+//                for(Jugador j: Jugadores){
+//                    System.out.println("Casilla de salida "+ j.casillaSalida.numero); 
+//                }
                 organizar(1);
                 organizar(2);
                 organizar(3);
@@ -121,6 +151,7 @@ public class Tablero extends javax.swing.JFrame {
 
         turno = 1;
         actPaneles(turno);
+        armarFichas();
 
     }
 
@@ -135,22 +166,6 @@ public class Tablero extends javax.swing.JFrame {
 
         Pfondo = new javax.swing.JPanel();
         tab = new FondoTab();
-        r1 = new javax.swing.JButton();
-        a1 = new javax.swing.JButton();
-        r2 = new javax.swing.JButton();
-        r4 = new javax.swing.JButton();
-        r3 = new javax.swing.JButton();
-        a2 = new javax.swing.JButton();
-        a4 = new javax.swing.JButton();
-        a3 = new javax.swing.JButton();
-        m4 = new javax.swing.JButton();
-        v4 = new javax.swing.JButton();
-        v3 = new javax.swing.JButton();
-        v1 = new javax.swing.JButton();
-        v2 = new javax.swing.JButton();
-        m3 = new javax.swing.JButton();
-        m1 = new javax.swing.JButton();
-        m2 = new javax.swing.JButton();
         P1 = new javax.swing.JPanel();
         dado1 = new javax.swing.JToggleButton();
         dado2 = new javax.swing.JToggleButton();
@@ -193,246 +208,15 @@ public class Tablero extends javax.swing.JFrame {
 
         Pfondo.setBackground(new java.awt.Color(127, 49, 49));
 
-        r1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Rojo1.png"))); // NOI18N
-        r1.setBorderPainted(false);
-        r1.setContentAreaFilled(false);
-        r1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        r1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                r1ActionPerformed(evt);
-            }
-        });
-
-        a1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Azul1.png"))); // NOI18N
-        a1.setBorderPainted(false);
-        a1.setContentAreaFilled(false);
-        a1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        a1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                a1ActionPerformed(evt);
-            }
-        });
-
-        r2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Rojo1.png"))); // NOI18N
-        r2.setBorderPainted(false);
-        r2.setContentAreaFilled(false);
-        r2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        r2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                r2ActionPerformed(evt);
-            }
-        });
-
-        r4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Rojo1.png"))); // NOI18N
-        r4.setBorderPainted(false);
-        r4.setContentAreaFilled(false);
-        r4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        r4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                r4ActionPerformed(evt);
-            }
-        });
-
-        r3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Rojo1.png"))); // NOI18N
-        r3.setBorderPainted(false);
-        r3.setContentAreaFilled(false);
-        r3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        r3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                r3ActionPerformed(evt);
-            }
-        });
-
-        a2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Azul1.png"))); // NOI18N
-        a2.setBorderPainted(false);
-        a2.setContentAreaFilled(false);
-        a2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        a2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                a2ActionPerformed(evt);
-            }
-        });
-
-        a4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Azul1.png"))); // NOI18N
-        a4.setBorderPainted(false);
-        a4.setContentAreaFilled(false);
-        a4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        a4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                a4ActionPerformed(evt);
-            }
-        });
-
-        a3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Azul1.png"))); // NOI18N
-        a3.setBorderPainted(false);
-        a3.setContentAreaFilled(false);
-        a3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        a3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                a3ActionPerformed(evt);
-            }
-        });
-
-        m4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Amarillo1.png"))); // NOI18N
-        m4.setBorderPainted(false);
-        m4.setContentAreaFilled(false);
-        m4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        m4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                m4ActionPerformed(evt);
-            }
-        });
-
-        v4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Verde1.png"))); // NOI18N
-        v4.setBorderPainted(false);
-        v4.setContentAreaFilled(false);
-        v4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        v4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                v4ActionPerformed(evt);
-            }
-        });
-
-        v3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Verde1.png"))); // NOI18N
-        v3.setBorderPainted(false);
-        v3.setContentAreaFilled(false);
-        v3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        v3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                v3ActionPerformed(evt);
-            }
-        });
-
-        v1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Verde1.png"))); // NOI18N
-        v1.setBorderPainted(false);
-        v1.setContentAreaFilled(false);
-        v1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        v1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                v1ActionPerformed(evt);
-            }
-        });
-
-        v2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Verde1.png"))); // NOI18N
-        v2.setBorderPainted(false);
-        v2.setContentAreaFilled(false);
-        v2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        v2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                v2ActionPerformed(evt);
-            }
-        });
-
-        m3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Amarillo1.png"))); // NOI18N
-        m3.setBorderPainted(false);
-        m3.setContentAreaFilled(false);
-        m3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        m3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                m3ActionPerformed(evt);
-            }
-        });
-
-        m1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Amarillo1.png"))); // NOI18N
-        m1.setBorderPainted(false);
-        m1.setContentAreaFilled(false);
-        m1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        m1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                m1ActionPerformed(evt);
-            }
-        });
-
-        m2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Amarillo1.png"))); // NOI18N
-        m2.setBorderPainted(false);
-        m2.setContentAreaFilled(false);
-        m2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        m2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                m2ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout tabLayout = new javax.swing.GroupLayout(tab);
         tab.setLayout(tabLayout);
         tabLayout.setHorizontalGroup(
             tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tabLayout.createSequentialGroup()
-                .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(tabLayout.createSequentialGroup()
-                        .addGap(59, 59, 59)
-                        .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(a1)
-                            .addComponent(a3)
-                            .addComponent(r4)
-                            .addComponent(r1))
-                        .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(tabLayout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(a4)
-                                    .addComponent(a2)))
-                            .addGroup(tabLayout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(r2)
-                                    .addComponent(r3))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(v1)
-                        .addGap(26, 26, 26))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabLayout.createSequentialGroup()
-                        .addGap(192, 622, Short.MAX_VALUE)
-                        .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabLayout.createSequentialGroup()
-                                .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(m1)
-                                    .addComponent(m3))
-                                .addGap(18, 18, 18))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabLayout.createSequentialGroup()
-                                .addComponent(v3)
-                                .addGap(26, 26, 26)))))
-                .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(v2)
-                    .addComponent(m4)
-                    .addComponent(m2)
-                    .addComponent(v4))
-                .addGap(73, 73, 73))
+            .addGap(0, 803, Short.MAX_VALUE)
         );
         tabLayout.setVerticalGroup(
             tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tabLayout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(tabLayout.createSequentialGroup()
-                        .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(a1)
-                            .addComponent(a2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(a3)
-                            .addComponent(a4)))
-                    .addGroup(tabLayout.createSequentialGroup()
-                        .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(m2)
-                            .addComponent(m1))
-                        .addGap(18, 18, 18)
-                        .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(m4)
-                            .addComponent(m3))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 425, Short.MAX_VALUE)
-                .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(r1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(r2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(v2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(v1, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(18, 18, 18)
-                .addGroup(tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(r4)
-                        .addComponent(r3))
-                    .addComponent(v4, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(v3, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(69, 69, 69))
+            .addGap(0, 754, Short.MAX_VALUE)
         );
 
         P1.setBackground(new java.awt.Color(255, 51, 51));
@@ -861,9 +645,9 @@ public class Tablero extends javax.swing.JFrame {
                         .addGroup(PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(P4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(P3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(74, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PfondoLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 321, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );
@@ -901,65 +685,57 @@ public class Tablero extends javax.swing.JFrame {
         switch (color) {
             case 1 -> {
 
-                r1.setBounds(80, 556, 40, 40);
-                r2.setBounds(180, 556, 40, 40);
-                r3.setBounds(180, 656, 40, 40);
-                r4.setBounds(80, 656, 40, 40);
+
                 for (int i = 0; i < 4; i++) {
                     Jugadores.get(0).fichas.add(new ficha(Jugadores.get(0), 1, numeroficha, 0, 0));
                     numeroficha++;
                 }
-                Jugadores.get(0).fichas.get(0).setBoton(r1);
-                Jugadores.get(0).fichas.get(1).setBoton(r2);
-                Jugadores.get(0).fichas.get(2).setBoton(r3);
-                Jugadores.get(0).fichas.get(3).setBoton(r4);
+                Jugadores.get(0).fichas.get(0).setBounds(80, 556, 40, 40);
+                Jugadores.get(0).fichas.get(1).setBounds(180, 556, 40, 40);
+                Jugadores.get(0).fichas.get(2).setBounds(180, 656, 40, 40);
+                Jugadores.get(0).fichas.get(3).setBounds(80, 656, 40, 40);
+
                 System.out.println("organizo");
             }
             case 2 -> {
 
-                a1.setBounds(80, 74, 40, 40);
-                a2.setBounds(180, 74, 40, 40);
-                a3.setBounds(180, 174, 40, 40);
-                a4.setBounds(80, 174, 40, 40);
+
                 for (int i = 0; i < 4; i++) {
                     Jugadores.get(1).fichas.add(new ficha(Jugadores.get(1), 1, numeroficha, 0, 0));
                     numeroficha++;
                 }
-                Jugadores.get(1).fichas.get(0).setBoton(a1);
-                Jugadores.get(1).fichas.get(1).setBoton(a2);
-                Jugadores.get(1).fichas.get(2).setBoton(a3);
-                Jugadores.get(1).fichas.get(3).setBoton(a4);
+                Jugadores.get(1).fichas.get(0).setBounds(80, 74, 40, 40);
+                Jugadores.get(1).fichas.get(1).setBounds(180, 74, 40, 40);
+                Jugadores.get(1).fichas.get(2).setBounds(180, 174, 40, 40);
+                Jugadores.get(1).fichas.get(3).setBounds(80, 174, 40, 40);
             }
             case 3 -> {
-                m1.setBounds(600, 74, 40, 40);
-                m2.setBounds(700, 74, 40, 40);
-                m3.setBounds(700, 174, 40, 40);
-                m4.setBounds(600, 174, 40, 40);
+
                 for (int i = 0; i < 4; i++) {
                     Jugadores.get(2).fichas.add(new ficha(Jugadores.get(2), 1, numeroficha, 0, 0));
                     numeroficha++;
                 }
-                Jugadores.get(2).fichas.get(0).setBoton(m1);
-                Jugadores.get(2).fichas.get(1).setBoton(m2);
-                Jugadores.get(2).fichas.get(2).setBoton(m3);
-                Jugadores.get(2).fichas.get(3).setBoton(m4);
+                Jugadores.get(2).fichas.get(0).setBounds(600, 74, 40, 40);
+                Jugadores.get(2).fichas.get(1).setBounds(700, 74, 40, 40);
+                Jugadores.get(2).fichas.get(2).setBounds(700, 174, 40, 40);
+                Jugadores.get(2).fichas.get(3).setBounds(600, 174, 40, 40);
+
             }
             case 4 -> {
-                v1.setBounds(600, 556, 40, 40);
-                v2.setBounds(700, 556, 40, 40);
-                v3.setBounds(700, 656, 40, 40);
-                v4.setBounds(600, 656, 40, 40);
                 for (int i = 0; i < 4; i++) {
                     Jugadores.get(3).fichas.add(new ficha(Jugadores.get(3), 1, numeroficha, 0, 0));
                     numeroficha++;
                 }
-                Jugadores.get(3).fichas.get(0).setBoton(v1);
-                Jugadores.get(3).fichas.get(1).setBoton(v2);
-                Jugadores.get(3).fichas.get(2).setBoton(v3);
-                Jugadores.get(3).fichas.get(3).setBoton(v4);
+                
+                Jugadores.get(3).fichas.get(0).setBounds(600, 556, 40, 40);
+                Jugadores.get(3).fichas.get(1).setBounds(700, 556, 40, 40);
+                Jugadores.get(3).fichas.get(2).setBounds(700, 656, 40, 40);
+                Jugadores.get(3).fichas.get(3).setBounds(600, 656, 40, 40);
+
             }
 
         }
+        
         //1.rojo - 2.azul - 3.amarillo - 4.Verde
     }
 
@@ -1056,6 +832,46 @@ public class Tablero extends javax.swing.JFrame {
         }
     }
 
+    //estructurar todos los botones que representan fichas
+    public void armarFichas() {
+        Jugadores.get(0).fichas.get(0).acomodar("Rojo1");
+        Jugadores.get(0).fichas.get(1).acomodar("Rojo1");
+        Jugadores.get(0).fichas.get(2).acomodar("Rojo1");
+        Jugadores.get(0).fichas.get(3).acomodar("Rojo1");
+        for(ficha f:Jugadores.get(0).fichas ){
+            tab.add(f);
+        }
+
+        Jugadores.get(1).fichas.get(0).acomodar("Azul1");
+        Jugadores.get(1).fichas.get(1).acomodar("Azul1");
+        Jugadores.get(1).fichas.get(2).acomodar("Azul1");
+        Jugadores.get(1).fichas.get(3).acomodar("Azul1");
+        for(ficha f:Jugadores.get(1).fichas ){
+            tab.add(f);
+        }
+
+        if (Jugadores.size()>2) {
+            Jugadores.get(2).fichas.get(0).acomodar("Amarillo1");
+            Jugadores.get(2).fichas.get(1).acomodar("Amarillo1");
+            Jugadores.get(2).fichas.get(2).acomodar("Amarillo1");
+            Jugadores.get(2).fichas.get(3).acomodar("Amarillo1");
+            for(ficha f:Jugadores.get(2).fichas ){
+            tab.add(f);
+        }
+        }
+
+        if (Jugadores.size()>3) {
+            Jugadores.get(3).fichas.get(0).acomodar("Verde1");
+            Jugadores.get(3).fichas.get(1).acomodar("Verde1");
+            Jugadores.get(3).fichas.get(2).acomodar("Verde1");
+            Jugadores.get(3).fichas.get(3).acomodar("Verde1");
+            for(ficha f:Jugadores.get(3).fichas ){
+            tab.add(f);
+        }
+        }
+
+    }
+
     //aumentará o reseteará el turno dependiendo la cantidad de jugadores
     public void aumentarTurno() {
         switch (Jugadores.size()) {
@@ -1082,6 +898,16 @@ public class Tablero extends javax.swing.JFrame {
                 break;
         }
     }
+
+    public static NodoPadre BuscarPorNum(int num) {
+        for (NodoPadre n : casillas) {
+            if (n.numero == num) {
+                return n;
+            }
+        }
+        return null;
+    }
+
     private void dado3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado3ActionPerformed
         System.out.println(valoresDados.get(2));
     }//GEN-LAST:event_dado3ActionPerformed
@@ -1141,70 +967,6 @@ public class Tablero extends javax.swing.JFrame {
         sonido("dices");
         dp4.start();
     }//GEN-LAST:event_LVActionPerformed
-
-    private void v3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_v3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_v3ActionPerformed
-
-    private void v4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_v4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_v4ActionPerformed
-
-    private void v2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_v2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_v2ActionPerformed
-
-    private void v1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_v1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_v1ActionPerformed
-
-    private void m2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_m2ActionPerformed
-
-    private void m1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_m1ActionPerformed
-
-    private void m3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_m3ActionPerformed
-
-    private void m4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_m4ActionPerformed
-
-    private void a2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_a2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_a2ActionPerformed
-
-    private void a1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_a1ActionPerformed
-        System.out.println("ficha azul");
-    }//GEN-LAST:event_a1ActionPerformed
-
-    private void a3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_a3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_a3ActionPerformed
-
-    private void a4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_a4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_a4ActionPerformed
-
-    private void r3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_r3ActionPerformed
-
-    private void r4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_r4ActionPerformed
-
-    private void r1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r1ActionPerformed
-        System.out.println("ficha roja");
-    }//GEN-LAST:event_r1ActionPerformed
-
-    private void r2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_r2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_r2ActionPerformed
 
     private void fin2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fin2ActionPerformed
 
@@ -1290,10 +1052,6 @@ public class Tablero extends javax.swing.JFrame {
     private javax.swing.JPanel P3;
     private javax.swing.JPanel P4;
     private javax.swing.JPanel Pfondo;
-    private javax.swing.JButton a1;
-    private javax.swing.JButton a2;
-    private javax.swing.JButton a3;
-    private javax.swing.JButton a4;
     private javax.swing.JToggleButton dado1;
     private javax.swing.JToggleButton dado2;
     private javax.swing.JToggleButton dado3;
@@ -1316,22 +1074,10 @@ public class Tablero extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton m1;
-    private javax.swing.JButton m2;
-    private javax.swing.JButton m3;
-    private javax.swing.JButton m4;
     private javax.swing.JLabel name2;
     private javax.swing.JLabel name3;
     private javax.swing.JLabel name4;
     private javax.swing.JLabel name5;
-    private javax.swing.JButton r1;
-    private javax.swing.JButton r2;
-    private javax.swing.JButton r3;
-    private javax.swing.JButton r4;
     public javax.swing.JPanel tab;
-    private javax.swing.JButton v1;
-    private javax.swing.JButton v2;
-    private javax.swing.JButton v3;
-    private javax.swing.JButton v4;
     // End of variables declaration//GEN-END:variables
 }

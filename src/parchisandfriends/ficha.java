@@ -5,17 +5,18 @@
 package parchisandfriends;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 /**
  *
  * @author ASUS TUF GAMING F15
  */
-class ficha {
+class ficha extends JButton  {
 
     private Jugador owner;
     private int color; //1 para rojo, 2 para azul, 3 para amarillo, 4 para verde
-    JButton ficha;
     int numero;
     int casilla;
     int posx, posy;
@@ -35,14 +36,6 @@ class ficha {
         return owner;
     }
 
-    public void setBoton(JButton ficha) {
-        this.ficha = ficha;
-    }
-
-    public JButton getBoton() {
-        return this.ficha;
-    }
-
     public int getColor() {
         return color;
     }
@@ -53,24 +46,24 @@ class ficha {
         if (donde.equals("y")) {
             if (sumRes) {
                 this.posx = posx;
-                this.posy = posy+20;
-            }else{
+                this.posy = posy + 20;
+            } else {
                 this.posx = posx;
-                this.posy = posy-20;
+                this.posy = posy - 20;
             }
 
         }
         if (donde.equals("x")) {
             if (sumRes) {
-                this.posx = posx+20;
+                this.posx = posx + 20;
                 this.posy = posy;
-            }else{
-                this.posx = posx-20;
+            } else {
+                this.posx = posx - 20;
                 this.posy = posy;
             }
         }
         if (salir) {
-            this.getBoton().setBounds(posx, posy, 40, 40);
+            this.setBounds(this.posx, this.posy, 40, 40);
         }
     }
 
@@ -78,5 +71,20 @@ class ficha {
         this.enCasa = true;
         this.casilla = 0;
     }
+
+    public void acomodar(String color) {
+        this.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/" + color + ".png")));
+        this.setBorderPainted(false);
+        this.setContentAreaFilled(false);
+        this.setVisible(true);
+        this.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        this.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("detectada");
+            }
+        });
+    }
+
 
 }

@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -21,7 +22,8 @@ public class Inicio extends javax.swing.JFrame {
     /**
      * Creates new form Inicio
      */
-    static ListaTablero casillas = new ListaTablero();
+    //static ListaTablero casillas = new ListaTablero();
+    static ArrayList<NodoPadre> casillas = new ArrayList<>();
 
     public Inicio() {
         try {
@@ -494,8 +496,11 @@ public class Inicio extends javax.swing.JFrame {
 
             while ((linea = lector.readLine()) != null) {
                 String[] splited = linea.split(",");
-                casillas.add(new NodoPadre(Integer.parseInt(splited[0]), Integer.parseInt(splited[1]), Integer.parseInt(splited[2]), parseBoolean(Integer.parseInt(splited[3])), Integer.parseInt(splited[4]),
-                        parseBoolean(Integer.parseInt(splited[5])), parseBoolean(Integer.parseInt(splited[6])), splited[7]));
+                NodoPadre nuevo = new NodoPadre(Integer.parseInt(splited[0]), Integer.parseInt(splited[1]), Integer.parseInt(splited[2]), parseBoolean(Integer.parseInt(splited[3])), Integer.parseInt(splited[4]),
+                        parseBoolean(Integer.parseInt(splited[5])), parseBoolean(Integer.parseInt(splited[6])), splited[7]);
+                casillas.add(nuevo);
+
+                //System.out.println("Casilla "+splited[0]);
 
             }
             System.out.println("Archivo cargado");
