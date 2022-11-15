@@ -34,6 +34,8 @@ public class Tablero extends javax.swing.JFrame {
     static Clip clip;
     int numeroficha = 1;
     static ArrayList<Integer> valoresDados = new ArrayList<>();
+    static ArrayList<JToggleButton> botonesDados = new ArrayList<>();
+    static int valorDados = 0;
     static String ruta = "src\\recursos\\";
     static ArrayList<Icon> dados = new ArrayList<>();
     static ArrayList<Icon> dadosp = new ArrayList<>(); //presionados
@@ -51,7 +53,7 @@ public class Tablero extends javax.swing.JFrame {
     Icon cuatrop = new javax.swing.ImageIcon(getClass().getResource("/images/dado4p.png"));
     Icon cincop = new javax.swing.ImageIcon(getClass().getResource("/images/dado5p.png"));
     Icon seisp = new javax.swing.ImageIcon(getClass().getResource("/images/dado6p.png"));
-    static int numero1, numero2, turno;
+    static int dado1Select = -1, dado2Select = -1, turno;
 
     //Botones de fichas:
     //rojas
@@ -97,6 +99,16 @@ public class Tablero extends javax.swing.JFrame {
         dadosp.add(cuatrop);
         dadosp.add(cincop);
         dadosp.add(seisp);
+
+        botonesDados.add(dado1);
+        botonesDados.add(dado2);
+        botonesDados.add(dado3);
+        botonesDados.add(dado4);
+        botonesDados.add(dado5);
+        botonesDados.add(dado6);
+        botonesDados.add(dado7);
+        botonesDados.add(dado8);
+
         for (int i = 1; i <= jugadores; i++) {
             Jugadores.add(new Jugador("Jugador " + i, i));
             //System.out.println(i);
@@ -685,7 +697,6 @@ public class Tablero extends javax.swing.JFrame {
         switch (color) {
             case 1 -> {
 
-
                 for (int i = 0; i < 4; i++) {
                     Jugadores.get(0).fichas.add(new ficha(Jugadores.get(0), 1, numeroficha, 0, 0));
                     numeroficha++;
@@ -698,7 +709,6 @@ public class Tablero extends javax.swing.JFrame {
                 System.out.println("organizo");
             }
             case 2 -> {
-
 
                 for (int i = 0; i < 4; i++) {
                     Jugadores.get(1).fichas.add(new ficha(Jugadores.get(1), 1, numeroficha, 0, 0));
@@ -726,7 +736,7 @@ public class Tablero extends javax.swing.JFrame {
                     Jugadores.get(3).fichas.add(new ficha(Jugadores.get(3), 1, numeroficha, 0, 0));
                     numeroficha++;
                 }
-                
+
                 Jugadores.get(3).fichas.get(0).setBounds(600, 556, 40, 40);
                 Jugadores.get(3).fichas.get(1).setBounds(700, 556, 40, 40);
                 Jugadores.get(3).fichas.get(2).setBounds(700, 656, 40, 40);
@@ -735,7 +745,7 @@ public class Tablero extends javax.swing.JFrame {
             }
 
         }
-        
+
         //1.rojo - 2.azul - 3.amarillo - 4.Verde
     }
 
@@ -838,7 +848,7 @@ public class Tablero extends javax.swing.JFrame {
         Jugadores.get(0).fichas.get(1).acomodar("Rojo1");
         Jugadores.get(0).fichas.get(2).acomodar("Rojo1");
         Jugadores.get(0).fichas.get(3).acomodar("Rojo1");
-        for(ficha f:Jugadores.get(0).fichas ){
+        for (ficha f : Jugadores.get(0).fichas) {
             tab.add(f);
         }
 
@@ -846,28 +856,28 @@ public class Tablero extends javax.swing.JFrame {
         Jugadores.get(1).fichas.get(1).acomodar("Azul1");
         Jugadores.get(1).fichas.get(2).acomodar("Azul1");
         Jugadores.get(1).fichas.get(3).acomodar("Azul1");
-        for(ficha f:Jugadores.get(1).fichas ){
+        for (ficha f : Jugadores.get(1).fichas) {
             tab.add(f);
         }
 
-        if (Jugadores.size()>2) {
+        if (Jugadores.size() > 2) {
             Jugadores.get(2).fichas.get(0).acomodar("Amarillo1");
             Jugadores.get(2).fichas.get(1).acomodar("Amarillo1");
             Jugadores.get(2).fichas.get(2).acomodar("Amarillo1");
             Jugadores.get(2).fichas.get(3).acomodar("Amarillo1");
-            for(ficha f:Jugadores.get(2).fichas ){
-            tab.add(f);
-        }
+            for (ficha f : Jugadores.get(2).fichas) {
+                tab.add(f);
+            }
         }
 
-        if (Jugadores.size()>3) {
+        if (Jugadores.size() > 3) {
             Jugadores.get(3).fichas.get(0).acomodar("Verde1");
             Jugadores.get(3).fichas.get(1).acomodar("Verde1");
             Jugadores.get(3).fichas.get(2).acomodar("Verde1");
             Jugadores.get(3).fichas.get(3).acomodar("Verde1");
-            for(ficha f:Jugadores.get(3).fichas ){
-            tab.add(f);
-        }
+            for (ficha f : Jugadores.get(3).fichas) {
+                tab.add(f);
+            }
         }
 
     }
@@ -908,36 +918,64 @@ public class Tablero extends javax.swing.JFrame {
         return null;
     }
 
+    //verificar cual dado está seleccionado y obtener su valor
+    public void dadosSeleccionados(JToggleButton principal, JToggleButton secundario) {
+        int b1= botonesDados.indexOf(principal);
+        if (secundario.isSelected()) {
+            int b2= botonesDados.indexOf(secundario);
+            valorDados = valoresDados.get(b1) + valoresDados.get(b2);
+            if (dado2Select == -1) {
+                dado2Select = b2;
+            }
+
+        } else {
+            valorDados = valoresDados.get(b1);
+        }
+        if (dado1Select == -1) {
+            dado1Select = b1;
+        }
+
+    }
+
     private void dado3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado3ActionPerformed
         System.out.println(valoresDados.get(2));
+
+        dadosSeleccionados(dado3, dado4);
     }//GEN-LAST:event_dado3ActionPerformed
 
     private void dado4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado4ActionPerformed
         System.out.println(valoresDados.get(3));
+        dadosSeleccionados(dado4,dado3);
     }//GEN-LAST:event_dado4ActionPerformed
 
     private void dado1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado1ActionPerformed
         System.out.println(valoresDados.get(0));
+        dadosSeleccionados(dado1,dado2);
+
     }//GEN-LAST:event_dado1ActionPerformed
 
     private void dado2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado2ActionPerformed
         System.out.println(valoresDados.get(1));
+        dadosSeleccionados(dado2,dado1);
     }//GEN-LAST:event_dado2ActionPerformed
 
     private void dado5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado5ActionPerformed
         System.out.println(valoresDados.get(4));
+        dadosSeleccionados(dado5,dado6);
     }//GEN-LAST:event_dado5ActionPerformed
 
     private void dado6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado6ActionPerformed
-        System.out.println(valoresDados.get(5));
+        dadosSeleccionados(dado6,dado5);
     }//GEN-LAST:event_dado6ActionPerformed
 
     private void dado7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado7ActionPerformed
         System.out.println(valoresDados.get(6));
+        dadosSeleccionados(dado7,dado8);
     }//GEN-LAST:event_dado7ActionPerformed
 
     private void dado8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado8ActionPerformed
         System.out.println(valoresDados.get(7));
+        dadosSeleccionados(dado8,dado7);
     }//GEN-LAST:event_dado8ActionPerformed
 
 

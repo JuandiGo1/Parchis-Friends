@@ -4,6 +4,8 @@
  */
 package parchisandfriends;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static parchisandfriends.Tablero.BuscarPorNum;
 
 /**
@@ -35,11 +37,19 @@ public class HiloFicha extends Thread{
             destino= destino-68;
         }
         NodoPadre casillaFin = BuscarPorNum(destino);
-        
+        casillaInicio.cantFichas.remove(ficha);
         for(int i= posActual; i<=destino;i++){
             NodoPadre temp= BuscarPorNum(i);
-            //ficha.setPos(i, i, true, donde, true);
+            ficha.setPos(temp.centroX, temp.centroY, true, temp.dondeSumar, true, true);
+            try {
+                Thread.sleep(150);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        
+        ficha.casilla= casillaFin.numero;
+        casillaFin.cantFichas.add(ficha);
         
     }
 }

@@ -8,12 +8,17 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import static parchisandfriends.Tablero.botonesDados;
+import static parchisandfriends.Tablero.dado1Select;
+import static parchisandfriends.Tablero.dado2Select;
+import static parchisandfriends.Tablero.turno;
+import static parchisandfriends.Tablero.valorDados;
 
 /**
  *
  * @author ASUS TUF GAMING F15
  */
-class ficha extends JButton  {
+class ficha extends JButton {
 
     private Jugador owner;
     private int color; //1 para rojo, 2 para azul, 3 para amarillo, 4 para verde
@@ -22,6 +27,7 @@ class ficha extends JButton  {
     int posx, posy;
     boolean disponible = false;
     boolean enCasa = true;
+    ficha esta;
 
     public ficha(Jugador owner, int color, int numero, int posx, int posy) {
         this.owner = owner;
@@ -29,6 +35,7 @@ class ficha extends JButton  {
         this.numero = numero;
         this.posx = posx;
         this.posy = posy;
+        this.esta = this;
 
     }
 
@@ -40,9 +47,13 @@ class ficha extends JButton  {
         return color;
     }
 
-    public void setPos(int posx, int posy, boolean salir, String donde, boolean sumRes) {
+    public void setPos(int posx, int posy, boolean salir, String donde, boolean sumRes, boolean dePaso) {
         this.posx = posx;
         this.posy = posy;
+        if (dePaso) {
+            this.setBounds(this.posx, this.posy, 40, 40);
+            return;
+        }
         if (donde.equals("y")) {
             if (sumRes) {
                 this.posx = posx;
@@ -62,6 +73,7 @@ class ficha extends JButton  {
                 this.posy = posy;
             }
         }
+
         if (salir) {
             this.setBounds(this.posx, this.posy, 40, 40);
         }
@@ -81,10 +93,28 @@ class ficha extends JButton  {
         this.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("detectada");
+                if (turno == esta.owner.turno) {
+                    System.out.println("detectada");
+                    HiloFicha movimiento = new HiloFicha(esta, valorDados);
+                    valorDados = 0;
+                    if (dado1Select != -1) {
+                        botonesDados.get(dado1Select).setEnabled(false);
+                        botonesDados.get(dado1Select).setSelected(false);
+                        dado1Select = -1;
+                    }
+                    if (dado2Select != -1) {
+                        botonesDados.get(dado2Select).setEnabled(false);
+                        botonesDados.get(dado2Select).setSelected(false);
+                        dado2Select = -1;
+                    }
+
+                    movimiento.start();
+                } else {
+                    System.out.println("No es tu ficha");
+                }
+
             }
         });
     }
-
 
 }
