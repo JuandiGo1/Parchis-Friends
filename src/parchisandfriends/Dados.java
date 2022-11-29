@@ -4,6 +4,7 @@
  */
 package parchisandfriends;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,6 +12,10 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JToggleButton;
 import static parchisandfriends.Tablero.dadosp;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 
 /**
  *
@@ -31,9 +36,9 @@ public class Dados extends Thread {
         time = 70;
         this.dado1 = dado1;
         this.dado2 = dado2;
-        this.lanzar= lanzar;
-        this.pasar= pasar;
-        this.j= j;
+        this.lanzar = lanzar;
+        this.pasar = pasar;
+        this.j = j;
     }
 
     public void setD1(int d1) {
@@ -46,10 +51,15 @@ public class Dados extends Thread {
 
     @Override
     public void run() {
-
+        
+        
         for (int i = 1; i <= 8; i++) {
             this.d1 = (int) (Math.random() * 6) + 1;
-            this.d2 = (int) (Math.random() * 6) + 1;
+            if (!j.tieneFichasFuera() && j.enSeco >= 3) {
+                this.d2 = this.d1;
+            } else {
+                this.d2 = (int) (Math.random() * 6) + 1;
+            }
 
             boton1.setIcon(dados.get(d1 - 1));
             boton2.setIcon(dados.get(d2 - 1));
@@ -62,17 +72,26 @@ public class Dados extends Thread {
             }
 
         }
-        
+
         Tablero.valoresDados.set(dado1, d1);
         Tablero.valoresDados.set(dado2, d2);
-        if(d1==d2){
-            
-            quote q= new quote();
+        boton1.setEnabled(true);
+        boton2.setEnabled(true);
+        if (d1 == d2) {
+
+            quote q = new quote(1);
             q.setVisible(true);
             j.sacar();
+            if (j.saca) {
+                boton1.setEnabled(false);
+                boton2.setEnabled(false);
+            }
+            j.saca=false;
+            j.enSeco = 0;
             lanzar.setEnabled(true);
             pasar.setEnabled(false);
-        }else{
+        } else {
+            j.enSeco++;
             lanzar.setEnabled(false);
             pasar.setEnabled(true);
         }

@@ -9,11 +9,15 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
@@ -24,6 +28,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import static parchisandfriends.Inicio.casillas;
+import static parchisandfriends.Inicio.names;
 
 /**
  *
@@ -32,14 +37,16 @@ import static parchisandfriends.Inicio.casillas;
 public class Tablero extends javax.swing.JFrame {
 
     static Clip clip;
+    int jugadores;
     int numeroficha = 1;
-    static ArrayList<Integer> valoresDados = new ArrayList<>();
-    static ArrayList<JToggleButton> botonesDados = new ArrayList<>();
+    static ArrayList<Integer> valoresDados;
+    static ArrayList<JToggleButton> botonesDados;
     static int valorDados = 0;
     static String ruta = "src\\recursos\\";
     static ArrayList<Icon> dados = new ArrayList<>();
     static ArrayList<Icon> dadosp = new ArrayList<>(); //presionados
-    static ArrayList<Jugador> Jugadores = new ArrayList<>();
+    static ArrayList<Jugador> Jugadores;
+    static ArrayList<Jugador> llegada;
     Icon uno = new javax.swing.ImageIcon(getClass().getResource("/images/dado1.png"));
     Icon dos = new javax.swing.ImageIcon(getClass().getResource("/images/dado2.png"));
     Icon tres = new javax.swing.ImageIcon(getClass().getResource("/images/dado3.png"));
@@ -82,8 +89,13 @@ public class Tablero extends javax.swing.JFrame {
 
     //verdes
     public Tablero(int jugadores) {
-        initComponents();
 
+        initComponents();
+        Jugadores = new ArrayList<>();
+        valoresDados = new ArrayList<>();
+        botonesDados = new ArrayList<>();
+        llegada = new ArrayList<>();
+        this.jugadores = jugadores;
         dados.add(uno);
         dados.add(dos);
         dados.add(tres);
@@ -108,9 +120,13 @@ public class Tablero extends javax.swing.JFrame {
         botonesDados.add(dado6);
         botonesDados.add(dado7);
         botonesDados.add(dado8);
+        BuscarPorNum(478).llegada = true;
+        BuscarPorNum(648).llegada = true;
+        BuscarPorNum(138).llegada = true;
+        BuscarPorNum(308).llegada = true;
 
-        for (int i = 1; i <= jugadores; i++) {
-            Jugadores.add(new Jugador("Jugador " + i, i));
+        for (int i = 1; i <= this.jugadores; i++) {
+            Jugadores.add(new Jugador(this, names.get(i - 1), i, i));
             //System.out.println(i);
 
         }
@@ -129,6 +145,12 @@ public class Tablero extends javax.swing.JFrame {
                 P4.setVisible(false);
                 Jugadores.get(0).casillaSalida = BuscarPorNum(1);
                 Jugadores.get(1).casillaSalida = BuscarPorNum(52);
+                Jugadores.get(0).Panel = P1;
+                Jugadores.get(1).Panel = P2;
+                Jugadores.get(0).asignarBotones(dado1, dado2);
+                Jugadores.get(1).asignarBotones(dado3, dado4);
+                name1.setText(Jugadores.get(0).nick);
+                name2.setText(Jugadores.get(1).nick);
                 organizar(1);
                 organizar(2);
             }
@@ -141,6 +163,15 @@ public class Tablero extends javax.swing.JFrame {
                 Jugadores.get(0).casillaSalida = BuscarPorNum(1);
                 Jugadores.get(1).casillaSalida = BuscarPorNum(52);
                 Jugadores.get(2).casillaSalida = BuscarPorNum(35);
+                Jugadores.get(0).Panel = P1;
+                Jugadores.get(1).Panel = P2;
+                Jugadores.get(2).Panel = P3;
+                Jugadores.get(0).asignarBotones(dado1, dado2);
+                Jugadores.get(1).asignarBotones(dado3, dado4);
+                Jugadores.get(2).asignarBotones(dado5, dado6);
+                name1.setText(Jugadores.get(0).nick);
+                name2.setText(Jugadores.get(1).nick);
+                name3.setText(Jugadores.get(2).nick);
                 organizar(1);
                 organizar(2);
                 organizar(3);
@@ -150,9 +181,18 @@ public class Tablero extends javax.swing.JFrame {
                 Jugadores.get(1).casillaSalida = BuscarPorNum(52);
                 Jugadores.get(2).casillaSalida = BuscarPorNum(35);
                 Jugadores.get(3).casillaSalida = BuscarPorNum(18);
-//                for(Jugador j: Jugadores){
-//                    System.out.println("Casilla de salida "+ j.casillaSalida.numero); 
-//                }
+                Jugadores.get(0).Panel = P1;
+                Jugadores.get(1).Panel = P2;
+                Jugadores.get(2).Panel = P3;
+                Jugadores.get(3).Panel = P4;
+                Jugadores.get(0).asignarBotones(dado1, dado2);
+                Jugadores.get(1).asignarBotones(dado3, dado4);
+                Jugadores.get(2).asignarBotones(dado5, dado6);
+                Jugadores.get(3).asignarBotones(dado7, dado8);
+                name1.setText(Jugadores.get(0).nick);
+                name2.setText(Jugadores.get(1).nick);
+                name3.setText(Jugadores.get(2).nick);
+                name4.setText(Jugadores.get(3).nick);
                 organizar(1);
                 organizar(2);
                 organizar(3);
@@ -162,6 +202,7 @@ public class Tablero extends javax.swing.JFrame {
         }
 
         turno = 1;
+        System.out.println(Jugadores.size());
         actPaneles(turno);
         armarFichas();
 
@@ -176,13 +217,17 @@ public class Tablero extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        buttonGroup3 = new javax.swing.ButtonGroup();
+        buttonGroup4 = new javax.swing.ButtonGroup();
         Pfondo = new javax.swing.JPanel();
         tab = new FondoTab();
         P1 = new javax.swing.JPanel();
         dado1 = new javax.swing.JToggleButton();
         dado2 = new javax.swing.JToggleButton();
         foto1 = new javax.swing.JLabel();
-        name4 = new javax.swing.JLabel();
+        name1 = new javax.swing.JLabel();
         LR = new javax.swing.JButton();
         fin1 = new javax.swing.JButton();
         P2 = new javax.swing.JPanel();
@@ -203,7 +248,7 @@ public class Tablero extends javax.swing.JFrame {
         foto4 = new javax.swing.JLabel();
         dado7 = new javax.swing.JToggleButton();
         dado8 = new javax.swing.JToggleButton();
-        name5 = new javax.swing.JLabel();
+        name4 = new javax.swing.JLabel();
         LV = new javax.swing.JButton();
         fin4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -233,6 +278,7 @@ public class Tablero extends javax.swing.JFrame {
 
         P1.setBackground(new java.awt.Color(255, 51, 51));
 
+        buttonGroup1.add(dado1);
         dado1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado1.png"))); // NOI18N
         dado1.setContentAreaFilled(false);
         dado1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -242,6 +288,7 @@ public class Tablero extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup1.add(dado2);
         dado2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado1.png"))); // NOI18N
         dado2.setContentAreaFilled(false);
         dado2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -254,10 +301,10 @@ public class Tablero extends javax.swing.JFrame {
         foto1.setBackground(new java.awt.Color(204, 204, 204));
         foto1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Player1.png"))); // NOI18N
 
-        name4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        name4.setForeground(new java.awt.Color(255, 255, 255));
-        name4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        name4.setText("Jugador 1");
+        name1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        name1.setForeground(new java.awt.Color(255, 255, 255));
+        name1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        name1.setText("Jugador 1");
 
         LR.setBackground(new java.awt.Color(204, 0, 0));
         LR.setForeground(new java.awt.Color(255, 255, 255));
@@ -288,7 +335,7 @@ public class Tablero extends javax.swing.JFrame {
                 .addGroup(P1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(foto1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
                     .addGroup(P1Layout.createSequentialGroup()
-                        .addComponent(name4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(name1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(P1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -314,13 +361,14 @@ public class Tablero extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(foto1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(name4)))
+                        .addComponent(name1)))
                 .addGap(18, 18, 18)
                 .addComponent(LR))
         );
 
         P2.setBackground(new java.awt.Color(0, 102, 255));
 
+        buttonGroup2.add(dado3);
         dado3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado2.png"))); // NOI18N
         dado3.setContentAreaFilled(false);
         dado3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -330,6 +378,7 @@ public class Tablero extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup2.add(dado4);
         dado4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado2.png"))); // NOI18N
         dado4.setContentAreaFilled(false);
         dado4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -412,6 +461,7 @@ public class Tablero extends javax.swing.JFrame {
         foto3.setBackground(new java.awt.Color(204, 204, 204));
         foto3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Player3.png"))); // NOI18N
 
+        buttonGroup3.add(dado5);
         dado5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado3.png"))); // NOI18N
         dado5.setContentAreaFilled(false);
         dado5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -421,6 +471,7 @@ public class Tablero extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup3.add(dado6);
         dado6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado3.png"))); // NOI18N
         dado6.setContentAreaFilled(false);
         dado6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -499,6 +550,7 @@ public class Tablero extends javax.swing.JFrame {
         foto4.setBackground(new java.awt.Color(204, 204, 204));
         foto4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Player4.png"))); // NOI18N
 
+        buttonGroup4.add(dado7);
         dado7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado4.png"))); // NOI18N
         dado7.setContentAreaFilled(false);
         dado7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -508,6 +560,7 @@ public class Tablero extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup4.add(dado8);
         dado8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dado4.png"))); // NOI18N
         dado8.setContentAreaFilled(false);
         dado8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -517,10 +570,10 @@ public class Tablero extends javax.swing.JFrame {
             }
         });
 
-        name5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        name5.setForeground(new java.awt.Color(255, 255, 255));
-        name5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        name5.setText("Jugador 4");
+        name4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        name4.setForeground(new java.awt.Color(255, 255, 255));
+        name4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        name4.setText("Jugador 4");
 
         LV.setBackground(new java.awt.Color(0, 153, 0));
         LV.setForeground(new java.awt.Color(255, 255, 255));
@@ -550,7 +603,7 @@ public class Tablero extends javax.swing.JFrame {
                 .addGroup(P4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(foto4, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
                     .addGroup(P4Layout.createSequentialGroup()
-                        .addComponent(name5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(name4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addGroup(P4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -576,7 +629,7 @@ public class Tablero extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(foto4, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(name5)))
+                        .addComponent(name4)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(LV))
         );
@@ -591,15 +644,28 @@ public class Tablero extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(102, 0, 0));
 
-        jButton1.setText("VOLVER");
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home1.png"))); // NOI18N
+        jButton1.setBorderPainted(false);
+        jButton1.setContentAreaFilled(false);
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("?");
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/infor1.png"))); // NOI18N
+        jButton2.setBorderPainted(false);
+        jButton2.setContentAreaFilled(false);
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jButton3.setBackground(new java.awt.Color(255, 0, 51));
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("X");
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logout1.png"))); // NOI18N
         jButton3.setToolTipText("CERRAR");
+        jButton3.setBorderPainted(false);
+        jButton3.setContentAreaFilled(false);
         jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -615,20 +681,23 @@ public class Tablero extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(49, 49, 49)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(110, 110, 110)
-                .addComponent(jButton3)
-                .addGap(56, 56, 56))
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(96, 96, 96)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46))
         );
 
         javax.swing.GroupLayout PfondoLayout = new javax.swing.GroupLayout(Pfondo);
@@ -648,7 +717,7 @@ public class Tablero extends javax.swing.JFrame {
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(PfondoLayout.createSequentialGroup()
                         .addGap(37, 37, 37)
-                        .addComponent(info, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(info, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(PfondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -659,7 +728,7 @@ public class Tablero extends javax.swing.JFrame {
                             .addComponent(P3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PfondoLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 321, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 327, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );
@@ -673,7 +742,7 @@ public class Tablero extends javax.swing.JFrame {
                         .addGap(62, 62, 62)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(info)
+                        .addComponent(info, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(P1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(tab, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -702,45 +771,61 @@ public class Tablero extends javax.swing.JFrame {
                     numeroficha++;
                 }
                 Jugadores.get(0).fichas.get(0).setBounds(80, 556, 40, 40);
+                Jugadores.get(0).fichas.get(0).coorInicial(80, 556);
                 Jugadores.get(0).fichas.get(1).setBounds(180, 556, 40, 40);
+                Jugadores.get(0).fichas.get(1).coorInicial(180, 556);
                 Jugadores.get(0).fichas.get(2).setBounds(180, 656, 40, 40);
+                Jugadores.get(0).fichas.get(2).coorInicial(180, 656);
                 Jugadores.get(0).fichas.get(3).setBounds(80, 656, 40, 40);
+                Jugadores.get(0).fichas.get(3).coorInicial(80, 656);
 
                 System.out.println("organizo");
             }
             case 2 -> {
 
                 for (int i = 0; i < 4; i++) {
-                    Jugadores.get(1).fichas.add(new ficha(Jugadores.get(1), 1, numeroficha, 0, 0));
+                    Jugadores.get(1).fichas.add(new ficha(Jugadores.get(1), 2, numeroficha, 0, 0));
                     numeroficha++;
                 }
                 Jugadores.get(1).fichas.get(0).setBounds(80, 74, 40, 40);
+                Jugadores.get(1).fichas.get(0).coorInicial(80, 74);
                 Jugadores.get(1).fichas.get(1).setBounds(180, 74, 40, 40);
+                Jugadores.get(1).fichas.get(1).coorInicial(180, 74);
                 Jugadores.get(1).fichas.get(2).setBounds(180, 174, 40, 40);
+                Jugadores.get(1).fichas.get(2).coorInicial(180, 74);
                 Jugadores.get(1).fichas.get(3).setBounds(80, 174, 40, 40);
+                Jugadores.get(1).fichas.get(3).coorInicial(880, 174);
             }
             case 3 -> {
 
                 for (int i = 0; i < 4; i++) {
-                    Jugadores.get(2).fichas.add(new ficha(Jugadores.get(2), 1, numeroficha, 0, 0));
+                    Jugadores.get(2).fichas.add(new ficha(Jugadores.get(2), 3, numeroficha, 0, 0));
                     numeroficha++;
                 }
                 Jugadores.get(2).fichas.get(0).setBounds(600, 74, 40, 40);
+                Jugadores.get(2).fichas.get(0).coorInicial(600, 74);
                 Jugadores.get(2).fichas.get(1).setBounds(700, 74, 40, 40);
+                Jugadores.get(2).fichas.get(1).coorInicial(700, 74);
                 Jugadores.get(2).fichas.get(2).setBounds(700, 174, 40, 40);
+                Jugadores.get(2).fichas.get(2).coorInicial(700, 174);
                 Jugadores.get(2).fichas.get(3).setBounds(600, 174, 40, 40);
+                Jugadores.get(2).fichas.get(3).coorInicial(600, 174);
 
             }
             case 4 -> {
                 for (int i = 0; i < 4; i++) {
-                    Jugadores.get(3).fichas.add(new ficha(Jugadores.get(3), 1, numeroficha, 0, 0));
+                    Jugadores.get(3).fichas.add(new ficha(Jugadores.get(3), 4, numeroficha, 0, 0));
                     numeroficha++;
                 }
 
                 Jugadores.get(3).fichas.get(0).setBounds(600, 556, 40, 40);
+                Jugadores.get(3).fichas.get(0).coorInicial(600, 556);
                 Jugadores.get(3).fichas.get(1).setBounds(700, 556, 40, 40);
+                Jugadores.get(3).fichas.get(1).coorInicial(700, 556);
                 Jugadores.get(3).fichas.get(2).setBounds(700, 656, 40, 40);
+                Jugadores.get(3).fichas.get(2).coorInicial(700, 656);
                 Jugadores.get(3).fichas.get(3).setBounds(600, 656, 40, 40);
+                Jugadores.get(3).fichas.get(3).coorInicial(600, 656);
 
             }
 
@@ -749,97 +834,69 @@ public class Tablero extends javax.swing.JFrame {
         //1.rojo - 2.azul - 3.amarillo - 4.Verde
     }
 
-    public void sonido(String archivo) {
-
-        try {
-            clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/recursos/dices.mp3")));
-            clip.start();
-
-        } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
-            System.out.println("no se pudo");
+    public Jugador buscarTurno(int turno) {
+        for (Jugador J : Jugadores) {
+            if (J.turno == turno) {
+                return J;
+            }
         }
+        return null;
+    }
 
+    public JButton obtenerFin(Jugador J) {
+        switch (J.color) {
+            case 1:
+                return fin1;
+
+            case 2:
+                return fin2;
+
+            case 3:
+                return fin3;
+
+            case 4:
+                return fin4;
+
+        }
+        return null;
     }
 
     //Activar y desactivar paneles de los jugadores según el turno. MODO offline
     public void actPaneles(int turno) {
-        switch (turno) {
-            case 1:
-                for (Component component : P1.getComponents()) {
-                    component.setEnabled(true);
-                }
-                if (!Jugadores.get(0).pasar) {
-                    fin1.setEnabled(false);
-                }
-                for (Component component : P2.getComponents()) {
-                    component.setEnabled(false);
-                }
-                for (Component component : P3.getComponents()) {
-                    component.setEnabled(false);
-                }
-                for (Component component : P4.getComponents()) {
-                    component.setEnabled(false);
-                }
-                info.setText("Turno de " + Jugadores.get(0).nick);
 
-                break;
-            case 2:
-                for (Component component : P1.getComponents()) {
-                    component.setEnabled(false);
-                }
-                for (Component component : P2.getComponents()) {
-                    component.setEnabled(true);
-                }
-                if (!Jugadores.get(1).pasar) {
-                    fin2.setEnabled(false);
-                }
-                for (Component component : P3.getComponents()) {
-                    component.setEnabled(false);
-                }
-                for (Component component : P4.getComponents()) {
-                    component.setEnabled(false);
-                }
-                info.setText("Turno de " + Jugadores.get(1).nick);
-                break;
-            case 3:
-                for (Component component : P1.getComponents()) {
-                    component.setEnabled(false);
-                }
-                for (Component component : P2.getComponents()) {
-                    component.setEnabled(false);
-                }
-                for (Component component : P3.getComponents()) {
-                    component.setEnabled(true);
-                }
-                if (!Jugadores.get(2).pasar) {
-                    fin3.setEnabled(false);
-                }
-                for (Component component : P4.getComponents()) {
-                    component.setEnabled(false);
-                }
-                info.setText("Turno de " + Jugadores.get(2).nick);
-                break;
-            case 4:
-                for (Component component : P1.getComponents()) {
-                    component.setEnabled(false);
-                }
-                for (Component component : P2.getComponents()) {
-                    component.setEnabled(false);
-                }
-                for (Component component : P3.getComponents()) {
-                    component.setEnabled(false);
-                }
-                for (Component component : P4.getComponents()) {
-                    component.setEnabled(true);
-                }
-                if (!Jugadores.get(3).pasar) {
-                    fin4.setEnabled(false);
-                }
-                info.setText("Turno de " + Jugadores.get(3).nick);
-                break;
+        Jugador actual = buscarTurno(turno);
+        for (Jugador J : Jugadores) {
+            if (J == actual) {
+                J.Paneles(true);
+                J.dado1.setEnabled(false);
+                J.dado2.setEnabled(false);
 
+                if (!J.pasar) {
+                    obtenerFin(J).setEnabled(false);
+                }
+
+            } else {
+                J.Paneles(false);
+            }
         }
+        info.setText("Turno de " + actual.nick);
+
+    }
+
+    public void reAsignarTurnos() {
+        int turnoNew = 1;
+        if (Jugadores.size() == 1) {
+            finGame fin = new finGame();
+            fin.setVisible(true);
+            //cerrar();
+            this.dispose();
+        } else {
+            for (Jugador J : Jugadores) {
+                J.turno = turnoNew;
+                turnoNew++;
+            }
+        }
+
     }
 
     //estructurar todos los botones que representan fichas
@@ -920,9 +977,9 @@ public class Tablero extends javax.swing.JFrame {
 
     //verificar cual dado está seleccionado y obtener su valor
     public void dadosSeleccionados(JToggleButton principal, JToggleButton secundario) {
-        int b1= botonesDados.indexOf(principal);
+        int b1 = botonesDados.indexOf(principal);
         if (secundario.isSelected()) {
-            int b2= botonesDados.indexOf(secundario);
+            int b2 = botonesDados.indexOf(secundario);
             valorDados = valoresDados.get(b1) + valoresDados.get(b2);
             if (dado2Select == -1) {
                 dado2Select = b2;
@@ -937,6 +994,7 @@ public class Tablero extends javax.swing.JFrame {
 
     }
 
+
     private void dado3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado3ActionPerformed
         System.out.println(valoresDados.get(2));
 
@@ -945,91 +1003,126 @@ public class Tablero extends javax.swing.JFrame {
 
     private void dado4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado4ActionPerformed
         System.out.println(valoresDados.get(3));
-        dadosSeleccionados(dado4,dado3);
+        dadosSeleccionados(dado4, dado3);
     }//GEN-LAST:event_dado4ActionPerformed
 
     private void dado1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado1ActionPerformed
         System.out.println(valoresDados.get(0));
-        dadosSeleccionados(dado1,dado2);
+        dadosSeleccionados(dado1, dado2);
 
     }//GEN-LAST:event_dado1ActionPerformed
 
     private void dado2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado2ActionPerformed
         System.out.println(valoresDados.get(1));
-        dadosSeleccionados(dado2,dado1);
+        dadosSeleccionados(dado2, dado1);
     }//GEN-LAST:event_dado2ActionPerformed
 
     private void dado5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado5ActionPerformed
         System.out.println(valoresDados.get(4));
-        dadosSeleccionados(dado5,dado6);
+        dadosSeleccionados(dado5, dado6);
     }//GEN-LAST:event_dado5ActionPerformed
 
     private void dado6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado6ActionPerformed
-        dadosSeleccionados(dado6,dado5);
+        dadosSeleccionados(dado6, dado5);
     }//GEN-LAST:event_dado6ActionPerformed
 
     private void dado7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado7ActionPerformed
         System.out.println(valoresDados.get(6));
-        dadosSeleccionados(dado7,dado8);
+        dadosSeleccionados(dado7, dado8);
     }//GEN-LAST:event_dado7ActionPerformed
 
     private void dado8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dado8ActionPerformed
         System.out.println(valoresDados.get(7));
-        dadosSeleccionados(dado8,dado7);
+        dadosSeleccionados(dado8, dado7);
     }//GEN-LAST:event_dado8ActionPerformed
 
+    //Impedir que el jugador salte turno o tire nuevamente los dados sin antes mover las fichas
+    public void comprobarEstado(Jugador J, JToggleButton b1, JToggleButton b2, Dados dados, String accion) {
+        switch (accion) {
+            case "pasar":
+                if (J.tieneFichasFuera() & J.FichasFuera() != 0 & !J.tieneFichaEnPasillo()) {
+                    if (b1.isEnabled() || b2.isEnabled()) {
+                        info.setText("Aun te quedan movimientos :)");
+                        break;
+                    }
+                }
+                aumentarTurno();
+                actPaneles(turno);
+                break;
+            case "lanzar":
+                if (J.tieneFichasFuera() & J.FichasFuera() != 0 & !J.tieneFichaEnPasillo()) {
+                    if (b1.isEnabled() || b2.isEnabled()) {
+                        info.setText("Aun te quedan movimientos :)");
+                        return;
+                    }
+                    dados.start();
+                    return;
+                }
+
+                dados.start();
+
+                b1.setEnabled(true);
+                b2.setEnabled(true);
+                break;
+        }
+
+    }
 
     private void LAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LAActionPerformed
         Dados dp2 = new Dados(dado3, dado4, 2, 3, fin2, LA, Jugadores.get(1));
-        sonido("dices");
-        dp2.start();
+        comprobarEstado(Jugadores.get(1), dado3, dado4, dp2, "lanzar");
 
     }//GEN-LAST:event_LAActionPerformed
 
     private void LRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LRActionPerformed
         Dados dp1 = new Dados(dado1, dado2, 0, 1, fin1, LR, Jugadores.get(0));
-        sonido("dices.mp3");
-        dp1.start();
+        comprobarEstado(Jugadores.get(0), dado1, dado2, dp1, "lanzar");
 
     }//GEN-LAST:event_LRActionPerformed
 
     private void LMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LMActionPerformed
         Dados dp3 = new Dados(dado5, dado6, 4, 5, fin3, LM, Jugadores.get(2));
-        sonido("dices");
-        dp3.start();
+        comprobarEstado(Jugadores.get(2), dado5, dado6, dp3, "lanzar");
 
     }//GEN-LAST:event_LMActionPerformed
 
     private void LVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LVActionPerformed
         Dados dp4 = new Dados(dado7, dado8, 6, 7, fin4, LV, Jugadores.get(3));
-        sonido("dices");
-        dp4.start();
+        comprobarEstado(Jugadores.get(3), dado7, dado8, dp4, "lanzar");
+
     }//GEN-LAST:event_LVActionPerformed
 
     private void fin2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fin2ActionPerformed
-
-        aumentarTurno();
-        actPaneles(turno);
+        Dados dp2 = new Dados(dado3, dado4, 2, 3, fin2, LA, Jugadores.get(1));
+        comprobarEstado(Jugadores.get(1), dado3, dado4, dp2, "pasar");
     }//GEN-LAST:event_fin2ActionPerformed
 
     private void fin1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fin1ActionPerformed
-        aumentarTurno();
-        actPaneles(turno);
+        Dados dp1 = new Dados(dado1, dado2, 0, 1, fin1, LR, Jugadores.get(0));
+        comprobarEstado(Jugadores.get(0), dado1, dado2, dp1, "pasar");
     }//GEN-LAST:event_fin1ActionPerformed
 
     private void fin3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fin3ActionPerformed
-        aumentarTurno();
-        actPaneles(turno);
+        Dados dp3 = new Dados(dado5, dado6, 4, 5, fin3, LM, Jugadores.get(2));
+        comprobarEstado(Jugadores.get(2), dado5, dado6, dp3, "pasar");
     }//GEN-LAST:event_fin3ActionPerformed
 
     private void fin4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fin4ActionPerformed
-        aumentarTurno();
-        actPaneles(turno);
+        Dados dp4 = new Dados(dado7, dado8, 6, 7, fin4, LV, Jugadores.get(3));
+        comprobarEstado(Jugadores.get(3), dado7, dado8, dp4, "pasar");
     }//GEN-LAST:event_fin4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        Inicio volver = new Inicio();
+        volver.setVisible(true);
+        this.dispose();
+
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1045,16 +1138,24 @@ public class Tablero extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Tablero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Tablero.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Tablero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Tablero.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Tablero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Tablero.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Tablero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Tablero.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -1064,6 +1165,7 @@ public class Tablero extends javax.swing.JFrame {
 //                new Tablero().setVisible(true);
             }
         });
+
     }
 
     class FondoTab extends JPanel {
@@ -1090,6 +1192,10 @@ public class Tablero extends javax.swing.JFrame {
     private javax.swing.JPanel P3;
     private javax.swing.JPanel P4;
     private javax.swing.JPanel Pfondo;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.ButtonGroup buttonGroup3;
+    private javax.swing.ButtonGroup buttonGroup4;
     private javax.swing.JToggleButton dado1;
     private javax.swing.JToggleButton dado2;
     private javax.swing.JToggleButton dado3;
@@ -1106,16 +1212,16 @@ public class Tablero extends javax.swing.JFrame {
     private javax.swing.JLabel foto2;
     private javax.swing.JLabel foto3;
     private javax.swing.JLabel foto4;
-    private javax.swing.JLabel info;
+    public static javax.swing.JLabel info;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel name1;
     private javax.swing.JLabel name2;
     private javax.swing.JLabel name3;
     private javax.swing.JLabel name4;
-    private javax.swing.JLabel name5;
     public javax.swing.JPanel tab;
     // End of variables declaration//GEN-END:variables
 }

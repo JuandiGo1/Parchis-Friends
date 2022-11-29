@@ -24,9 +24,11 @@ class ficha extends JButton {
     private int color; //1 para rojo, 2 para azul, 3 para amarillo, 4 para verde
     int numero;
     int casilla;
-    int posx, posy;
-    boolean disponible = false;
+    int posx, posy, inicialx, inicialy;
+    int disponible = 0; //0 en casa, 1 jugando, 2 ganó
     boolean enCasa = true;
+    boolean enPasillo=false;
+    boolean dioVuelta=false;
     ficha esta;
 
     public ficha(Jugador owner, int color, int numero, int posx, int posy) {
@@ -79,9 +81,16 @@ class ficha extends JButton {
         }
     }
 
+    public void coorInicial(int x, int y) {
+        this.inicialx = x;
+        this.inicialy = y;
+    }
+
     public void encarcelar() {
         this.enCasa = true;
         this.casilla = 0;
+        this.setPos(this.inicialx, this.inicialy, true, "", true, true);
+        System.out.println("MATO");
     }
 
     public void acomodar(String color) {
@@ -94,21 +103,18 @@ class ficha extends JButton {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (turno == esta.owner.turno) {
-                    System.out.println("detectada");
-                    HiloFicha movimiento = new HiloFicha(esta, valorDados);
-                    valorDados = 0;
-                    if (dado1Select != -1) {
-                        botonesDados.get(dado1Select).setEnabled(false);
-                        botonesDados.get(dado1Select).setSelected(false);
-                        dado1Select = -1;
-                    }
-                    if (dado2Select != -1) {
-                        botonesDados.get(dado2Select).setEnabled(false);
-                        botonesDados.get(dado2Select).setSelected(false);
-                        dado2Select = -1;
-                    }
+                    if (!esta.enCasa && esta.disponible!=0) {
 
-                    movimiento.start();
+                        System.out.println("detectada");
+                        if (valorDados > 0) {
+                            HiloFicha movimiento = new HiloFicha(esta, valorDados);
+                            
+
+                            movimiento.start();
+                        }
+                    } else {
+                        Tablero.info.setText("No puedes mover esa ficha!");
+                    }
                 } else {
                     System.out.println("No es tu ficha");
                 }

@@ -15,7 +15,7 @@ public class NodoPadre {
     int numero;
     int centroX;
     int centroY;
-    boolean seguro, salida, entrada;
+    boolean seguro, salida, entrada, llegada;
     int color; //0 si no tiene, 1 para rojo, 2 para azul, 3 para amarillo, 4 para verde
     ArrayList<ficha> cantFichas = new ArrayList<>();
     String dondeSumar;
